@@ -1,8 +1,8 @@
 {
   "name": "dva-boot-admin",
   "version": "2.0.1",
-  "description": "dva-boot-admin",
-  "homepage": "/dva-boot-admin",
+  "description": "edy-admin",
+  "homepage": "/edy-admin",
   "repository": {
     "type": "git",
     "url": "git@github.com:LANIF-UI/dva-boot-admin.git"

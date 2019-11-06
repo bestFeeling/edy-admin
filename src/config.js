@@ -14,7 +14,10 @@ export default {
    * HTML的title模板
    */
   htmlTitle: 'DBAdmin - {title}',
-  
+
+  baseUrl: 'http://www.cqhtxxkj.com',
+  baseApiPrefix: '/api',
+
   /**
    * 系统通知
    */
@@ -38,8 +41,11 @@ export default {
      * 成功失败标识来进行区分
      */
     afterResponse: response => {
-      const { status, message } = response;
-      if (status) {
+      const { status, message, errorCode, errorMsg } = response;
+      if (status || errorCode == 1000) {
+        return response;
+      } else if (errorCode) {
+        notice.error(errorMsg);
         return response;
       } else {
         throw new Error(message);
@@ -49,6 +55,10 @@ export default {
       // 请求错误全局拦截
       if (err.name === 'RequestError') {
         notice.error(err.text || err.message);
+      } else if (typeof err === 'string') {
+        notice.error(err);
+      } else {
+        notice.error(err);
       }
     }
   },
@@ -60,7 +70,6 @@ export default {
       // RequestError为拦截请求异常
       if (errName === 'RequestError') {
         notice.error(err.message);
-        console.error(err); 
       } else {
         console.error(err);
       }

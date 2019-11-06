@@ -3,32 +3,14 @@
 
 const proxy = require('http-proxy-middleware');
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use(
-    proxy('/api/sub', {
-      target: 'http://localhost:8080',
+    proxy('/api', {
+      target: 'http://www.cqhtxxkj.com/',
       changeOrigin: true,
       pathRewrite: {
         '^/api': ''
       }
     })
   );
-  // app.use(
-  //   proxy('/api', {
-  //     target: 'http://aaa:1000',
-  //     changeOrigin: true,
-  //     pathRewrite: {
-  //       '^/api': ''
-  //     }
-  //   })
-  // );
-  // app.use(
-  //   proxy('/xxx', {
-  //     target: 'http://bbb:2000',
-  //     changeOrigin: true,
-  //     pathRewrite: {
-  //       '^/xxx': ''
-  //     }
-  //   })
-  // );
 };

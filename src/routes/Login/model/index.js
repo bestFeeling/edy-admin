@@ -23,18 +23,18 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const { status, message, data } = yield call(login, payload);
-      if (status) {
+      const { status, message, data, errorCode, errorMsg } = yield call(login, payload);
+      if (errorCode === 1000) {
         $$.setStore('user', data);
         yield put(routerRedux.replace('/'));
       } else {
         yield put({
           type: 'loginError',
-          payload: { message }
+          payload: { errorMsg }
         });
       }
     },
-    *logout(_, { put }) {}
+    *logout(_, { put }) { }
   },
 
   reducers: {

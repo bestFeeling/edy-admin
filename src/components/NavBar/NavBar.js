@@ -87,13 +87,14 @@ class NavBar extends PureComponent {
         <div className="navbar-branding">
           <Link className="navbar-brand" to="/">
             <img src={logoImg} alt="logo" />
-            <b>LANIF</b>
+            <b>Edy</b>
             Admin
           </Link>
           <span className="toggle_sidemenu_l" onClick={onCollapseLeftSide}>
             <Icon type="lines" />
           </span>
         </div>
+        {/* 
         <ul className="nav navbar-nav navbar-left clearfix">
           {collapsed || isMobile ? null : (
             <li>
@@ -133,7 +134,9 @@ class NavBar extends PureComponent {
             </div>
           </form>
         )}
+        */}
         <ul className="nav navbar-nav navbar-right clearfix">
+          {/** 
           <li>
             <a href="https://github.com/LANIF-UI/dva-boot-admin">
               <Icon type="github" antd />
@@ -152,6 +155,7 @@ class NavBar extends PureComponent {
               </a>
             </Popover>
           </li>
+          */}
           <li className="dropdown">
             <Popover
               placement="bottomRight"
@@ -162,7 +166,7 @@ class NavBar extends PureComponent {
             >
               <a className="dropdown-toggle">
                 <Badge dot>
-                  <Avatar src={require('assets/images/avatar.jpg')}>
+                  <Avatar src={require('assets/images/avatar.png')}>
                     {user.userName}
                   </Avatar>
                 </Badge>
@@ -178,6 +182,7 @@ class NavBar extends PureComponent {
 
 const UserDropDown = props => (
   <ul className="dropdown-menu list-group dropdown-persist">
+    {/** 
     <li className="list-group-item">
       <a className="animated animated-short fadeInUp">
         <Icon type="mail" /> 信息
@@ -200,6 +205,7 @@ const UserDropDown = props => (
         <Icon type="ring" /> 通知
       </a>
     </li>
+    */}
     <li className="list-group-item dropdown-footer">
       <Link to="/sign/login">
         <Icon type="poweroff" /> 退出

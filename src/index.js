@@ -29,7 +29,7 @@ app.use({ onError: config.exception.global });
 request.config(config.request);
 
 // 使用mock数据
-require('./__mocks__');
+// require('./__mocks__');
 // -> Developer mock data
 // if (process.env.NODE_ENV === 'development') {
 //   require('./__mocks__');

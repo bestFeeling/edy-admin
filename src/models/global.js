@@ -1,5 +1,6 @@
 import $$ from 'cmn-utils';
 import modelEnhance from '@/utils/modelEnhance';
+import route from './../routes/routeConfig'
 
 export default modelEnhance({
   namespace: 'global',
@@ -24,7 +25,6 @@ export default modelEnhance({
           });
         }
         loopMenu(data);
-        
         yield put({
           type: 'getMenuSuccess',
           payload: data,
@@ -56,5 +56,7 @@ export function getFlatMenu(menus) {
 }
 
 export async function getMenu(payload) {
-  return $$.post('/user/menu', payload);
+  // return $$.post('/user/menu', payload);
+  let dat = { status: 200, data: route }
+  return dat
 }

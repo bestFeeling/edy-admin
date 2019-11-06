@@ -99,6 +99,10 @@ class SearchBar extends React.Component {
     this.searchForm(true);
   }
 
+  onFieldsChange(props, changedFields, allFields) {
+    this.props.onFieldsChange && this.props.onFieldsChange(props, changedFields, allFields);
+  }
+
   searchForm(isReset) {
     this.props.form.validateFields((errors, values) => {
       if (errors) {
@@ -139,9 +143,9 @@ class SearchBar extends React.Component {
     const formItemLayout =
       type === 'grid'
         ? {
-            labelCol: { span: 8 },
-            wrapperCol: { span: 16 }
-          }
+          labelCol: { span: 8 },
+          wrapperCol: { span: 16 }
+        }
         : {};
 
     let ComponentBtnGroup = type === 'inline' ? Button.Group : PlainComp;
@@ -149,8 +153,8 @@ class SearchBar extends React.Component {
     let searchFields = columns.filter(col => col.searchItem);
     searchFields = group
       ? searchFields.filter(
-          col => col.searchItem && col.searchItem.group === group
-        )
+        col => col.searchItem && col.searchItem.group === group
+      )
       : searchFields;
 
     if (!searchFields.length) return null;

@@ -37,7 +37,7 @@ export async function asyncRequest(payload) {
   /**
    * other中可以配置 method headers data 等参数
    */
-  const { url, pageInfo, ...other } = payload;
+  let { url, pageInfo, ...other } = payload;
 
   // 如果是分页查询 (格式化发送参数)
   if (pageInfo && pageInfo instanceof PageInfo) {
@@ -49,7 +49,16 @@ export async function asyncRequest(payload) {
     }
     other.data = data;
   }
+  let dat = other.data
+  for (let k in dat) {
+    if (dat[k] === undefined || dat[k] === null) delete dat[k]
+  }
+  other.data = dat
 
+  other.headers = {
+    'content-type': 'application/json',
+    'Authorization': $$.getStore('user')
+  }
   const _promise = other.method
     ? request[other.method.toLowerCase()](url, other.data, other)
     : request.send(url, other);
