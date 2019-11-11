@@ -60,12 +60,18 @@ export default class extends BaseComponent {
   }
 
   loadSelectData = (selectedOptions) => {
-    console.log(selectedOptions)
     this.props.dispatch({
       type: 'branch/getAreaSelectData',
       payload: selectedOptions[selectedOptions.length - 1] || {}
     })
   }
+
+  onUpdate = record => {
+    this.setState({
+      record,
+      visible: true
+    });
+  };
 
   render() {
     const { branch, loading, dispatch } = this.props;
@@ -124,6 +130,9 @@ export default class extends BaseComponent {
       },
       onSubmit: values => {
         const self = this
+        const { directoryId = [] } = values
+        values.directoryId = directoryId[directoryId.length - 1]
+
         dispatch({
           type: 'branch/save',
           payload: {
