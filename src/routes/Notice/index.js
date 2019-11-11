@@ -6,8 +6,7 @@ export const routeConfig = {
   title: '公告模块',
   sort: 1
 }
-const routesConfig = app => (
-  {
+const routesConfig = app => ({
     ...routeConfig,
     ...{
       component: dynamicWrapper(app, [import('./model')], () => import('./components'))
