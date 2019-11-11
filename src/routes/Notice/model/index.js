@@ -102,9 +102,8 @@ export default modelEnhance({
     // 获取列表
     *getList({ payload = {} }, { call, put, select }) {
       const { pageData } = yield select(state => state.notice);
-      payload.pageNumber = pageData.pageNum
-      payload.pageSize = 2
-      console.log('inlist ', payload)
+      payload.pageNumber = payload.pageNumber || pageData.pageNum
+      payload.pageSize = payload.pageSize || pageData.pageSize
       yield put({
         type: '@request',
         afterResponse: resp => resp.data,
@@ -123,7 +122,7 @@ export default modelEnhance({
     GETDATA_SUCCESS(state, { payload }) {
       let { pageData } = state
       pageData.total = payload.total
-      pageData.pageSize = 2 //payload.pageSize 
+      payload.pageSize
       pageData.pageNum = payload.pageNumber ? payload.pageNumber : 1
       pageData.list = payload.contents
 

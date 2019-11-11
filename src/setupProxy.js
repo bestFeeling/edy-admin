@@ -5,8 +5,17 @@ const proxy = require('http-proxy-middleware');
 
 module.exports = function (app) {
   app.use(
+    proxy('/images', {
+      target: 'http://ydy.cqhtxxkj.com/',
+      changeOrigin: true,
+      pathRewrite: {
+      }
+    })
+  );
+
+  app.use(
     proxy('/api', {
-      target: 'http://www.cqhtxxkj.com/',
+      target: 'http://ydy.cqhtxxkj.com/',
       changeOrigin: true,
       pathRewrite: {
         '^/api': ''

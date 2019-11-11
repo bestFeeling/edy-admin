@@ -316,8 +316,8 @@ class FormComp extends React.Component {
               </Button>
             </ComponentCol>
           ) : (
-            footer
-          )}
+              footer
+            )}
         </ComponentRow>
       </Form>
     );

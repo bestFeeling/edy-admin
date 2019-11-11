@@ -2,8 +2,9 @@ import React from 'react';
 import DataTable from 'components/DataTable';
 import Icon from 'components/Icon';
 import Button from 'components/Button';
-import { Link } from 'dva/router';
-import { Tag } from 'antd';
+import LazyLoad from 'components/LazyLoad';
+import { Tag, Card } from 'antd';
+import config from '@/config';
 
 export default (self) => [
   {
@@ -34,8 +35,31 @@ export default (self) => [
   {
     title: '封面',
     name: 'cover',
-    tableItem: {},
-    formItem: {}
+    tableItem: {
+      render: (item) => {
+        return (
+          <Card
+            hoverable
+            style={{ display: 'inherit' }}
+            bodyStyle={{ padding: 0 }}
+            cover={
+              <LazyLoad
+                dataSrc={item}
+                style={{ height: '120px', width: 'auto' }}
+                onClick={e => self.onPreview(item)}
+              />
+            }
+          >
+          </Card>
+        )
+      }
+    },
+    formItem: {
+      type: 'upload',
+      action: '/fs/upload/image',
+      max: 1
+
+    }
   },
   {
     title: '内容',
@@ -48,14 +72,6 @@ export default (self) => [
     title: '概要',
     name: 'summary',
     formItem: {}
-  },
-  {
-    title: '序号',
-    name: 'order',
-    tableItem: {},
-    formItem: {
-      type: 'number'
-    }
   },
   {
     title: '失效时间',
@@ -88,7 +104,6 @@ export default (self) => [
         return (<Tag color={col}>{val}</Tag>)
       }
     },
-
   },
 
   {
@@ -99,6 +114,13 @@ export default (self) => [
       group: 'abc'
     },
     formItem: {}
+  },
+  {
+    title: '排序',
+    name: 'order',
+    formItem: {
+      type: 'number'
+    }
   },
   {
     title: '操作',

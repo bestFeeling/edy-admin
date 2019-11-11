@@ -17,7 +17,7 @@ class BaseComponent extends React.Component {
   /**
    * history api 路由跳转
    */
-  get history() { 
+  get history() {
     return this.context.router.history;
   }
 
@@ -52,7 +52,7 @@ class BaseComponent extends React.Component {
 
     const content = `您是否要删除这${
       $$.isArray(record) ? record.length : ''
-    }项？`;
+      }项？`;
 
     Modal.confirm({
       title: '注意',
@@ -60,7 +60,7 @@ class BaseComponent extends React.Component {
       onOk: () => {
         this.handleDelete($$.isArray(record) ? record : [record]);
       },
-      onCancel() {}
+      onCancel() { }
     });
   };
 

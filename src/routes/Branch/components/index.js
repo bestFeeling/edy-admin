@@ -1,30 +1,27 @@
+
 import React from 'react';
 import { connect } from 'dva';
 import { Layout, Button } from 'antd';
 import BaseComponent from 'components/BaseComponent';
-import Mask from 'components/Mask';
 import Toolbar from 'components/Toolbar';
 import SearchBar from 'components/SearchBar';
 import DataTable from 'components/DataTable';
 import { ModalForm } from 'components/Modal';
 import createColumns from './columns';
-import { normal, antdNotice } from 'components/Notification';
 import './index.less';
 const { Content, Header, Footer } = Layout;
 const Pagination = DataTable.Pagination;
 
-@connect(({ notice, loading }) => ({
-  notice,
-  loading: loading.models.notice
+@connect(({ branch, loading }) => ({
+  branch,
+  loading: loading.models.branch
 }))
 export default class extends BaseComponent {
   state = {
-    record: null,
     visible: false,
-    rows: [],
-    maskVisible: false,
-    dataSrc: null
-  };
+    record: null,
+    rows: []
+  }
 
   constructor(props) {
     super(props)
@@ -33,26 +30,28 @@ export default class extends BaseComponent {
 
   refresh() {
     this.props.dispatch({
-      type: 'notice/getList',
+      type: 'branch/getList',
       payload: {
         ...this.formRef.props.form.getFieldsValue()
       }
-    });
+    })
   }
 
   handleDelete = records => {
+    const self = this
     this.props.dispatch({
-      type: 'notice/remove',
+      type: 'branch/remove',
       payload: {
         ids: records.map(r => r.id).join(','),
+        success: this.refresh.bind(self)
       }
     });
   };
 
-  setStick = val => {
+  setDataState = val => {
     const self = this
     this.props.dispatch({
-      type: 'notice/setStick',
+      type: 'branch/setState',
       payload: {
         ...val,
         success: this.refresh.bind(self)
@@ -60,33 +59,18 @@ export default class extends BaseComponent {
     });
   }
 
-  setPush = val => {
-    const self = this
+  loadSelectData = (selectedOptions) => {
+    console.log(selectedOptions)
     this.props.dispatch({
-      type: 'notice/setPush',
-      payload: {
-        ...val,
-        success: this.refresh.bind(self)
-      }
-    });
+      type: 'branch/getAreaSelectData',
+      payload: selectedOptions[selectedOptions.length - 1] || {}
+    })
   }
-
-  onPreview = item => {
-    this.setState({
-      dataSrc: item,
-      maskVisible: true
-    });
-  };
-  onClose = () => {
-    this.setState({
-      maskVisible: false
-    });
-  };
-
 
   render() {
-    const { notice, loading, dispatch } = this.props;
-    const { notices, pageData } = notice;
+    const { branch, loading, dispatch } = this.props;
+
+    const { pageData } = branch;
     const columns = createColumns(this);
     const { rows, record, visible } = this.state;
     const self = this
@@ -95,7 +79,7 @@ export default class extends BaseComponent {
       columns,
       onSearch: values => {
         dispatch({
-          type: 'notice/getList',
+          type: 'branch/getList',
           payload: {
             ...values,
           }
@@ -108,13 +92,13 @@ export default class extends BaseComponent {
       columns,
       rowKey: 'id',
       dataItems: pageData,
-      selectType: 'checkbox',
+      selectType: 'branch/checkbox',
       showNum: true,
       isScroll: true,
       selectedRowKeys: rows.map(item => item.rowKey),
       onChange: ({ pageNum, pageSize }) => {
         dispatch({
-          type: 'notice/getList',
+          type: 'branch/getList',
           payload: {
             pageNumber: pageNum,
             pageSize
@@ -138,21 +122,10 @@ export default class extends BaseComponent {
           visible: false
         });
       },
-      // 新增、修改都会进到这个方法中，
-      // 可以使用主键或是否有record来区分状态
       onSubmit: values => {
         const self = this
-        console.log(values)
-        if (values.cover && values.cover.length > 0) {
-          values.cover = values.cover[0].response.data || ''
-        }
-        if (!values.cover) {
-          normal.error('没有获取到封面图片数据！')
-          return
-        }
-
         dispatch({
-          type: 'notice/save',
+          type: 'branch/save',
           payload: {
             values,
             success: () => {
@@ -197,22 +170,6 @@ export default class extends BaseComponent {
           <Pagination {...dataTableProps} />
         </Footer>
         <ModalForm {...modalFormProps} />
-
-        <Mask visible={this.state.maskVisible} onClose={this.onClose} closable>
-          <img
-            src={this.state.dataSrc}
-            alt=""
-            style={{
-              position: 'absolute',
-              margin: 'auto',
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-              maxHeight: '80%',
-            }}
-          />
-        </Mask>
       </Layout>
     );
   }

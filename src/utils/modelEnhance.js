@@ -59,6 +59,7 @@ export async function asyncRequest(payload) {
     'content-type': 'application/json',
     'Authorization': $$.getStore('user')
   }
+  console.log('send url = ', url)
   const _promise = other.method
     ? request[other.method.toLowerCase()](url, other.data, other)
     : request.send(url, other);

@@ -6,6 +6,7 @@ import Login from './Login';
 import Register from './Register';
 import Blank from './Blank';
 import Notice from './Notice'
+import Branch from './Branch'
 
 /**
  * 主路由配置
@@ -36,6 +37,7 @@ const routesConfig = app => [
     childRoutes: [
       Blank(app),
       Notice(app),
+      Branch(app),
       NotFound()
     ]
   }

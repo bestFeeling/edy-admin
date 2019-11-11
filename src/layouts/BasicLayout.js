@@ -73,6 +73,7 @@ export default class BasicLayout extends React.PureComponent {
   componentWillMount() {
     // 检查有户是否登录
     const user = $$.getStore('user');
+    console.log(user, '~~')
     if (!user) {
       this.props.dispatch(routerRedux.replace('/sign/login'));
     }
@@ -239,23 +240,23 @@ export default class BasicLayout extends React.PureComponent {
             {theme.layout.indexOf('tabLayout') >= 0 ? (
               <TabsLayout childRoutes={childRoutes} location={location} />
             ) : (
-              <Layout className="full-layout">
-                <Header>
-                  <TopBar
-                    expand={expandTopBar}
-                    toggleRightSide={this.toggleRightSide}
-                    collapsedRightSide={collapsedRightSide}
-                    onCollapse={this.onCollapseTopBar}
-                    currentMenu={currentMenu}
-                    location={location}
-                    theme={theme}
-                  />
-                </Header>
-                <Content className="router-page">
-                  <Switch>{childRoutes}</Switch>
-                </Content>
-              </Layout>
-            )}
+                <Layout className="full-layout">
+                  <Header>
+                    <TopBar
+                      expand={expandTopBar}
+                      toggleRightSide={this.toggleRightSide}
+                      collapsedRightSide={collapsedRightSide}
+                      onCollapse={this.onCollapseTopBar}
+                      currentMenu={currentMenu}
+                      location={location}
+                      theme={theme}
+                    />
+                  </Header>
+                  <Content className="router-page">
+                    <Switch>{childRoutes}</Switch>
+                  </Content>
+                </Layout>
+              )}
           </Content>
           <RightSideBar
             collapsed={collapsedRightSide}

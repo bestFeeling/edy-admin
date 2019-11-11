@@ -23,15 +23,18 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const { status, message, data, errorCode, errorMsg } = yield call(login, payload);
-      if (errorCode === 1000) {
-        $$.setStore('user', data);
-        yield put(routerRedux.replace('/'));
-      } else {
-        yield put({
-          type: 'loginError',
-          payload: { errorMsg }
-        });
+      try {
+        const { status, message, data, errorCode, errorMsg } = yield call(login, payload);
+        if (errorCode === 1000) {
+          $$.setStore('user', data);
+          yield put(routerRedux.replace('/'));
+        } else {
+          yield put({
+            type: 'loginError',
+            payload: { errorMsg }
+          });
+        }
+      } catch (err) {
       }
     },
     *logout(_, { put }) { }

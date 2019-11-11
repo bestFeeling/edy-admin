@@ -2,6 +2,7 @@ import React from 'react';
 import PageLoading from 'components/Loading/PageLoading';
 import { normal } from 'components/Notification';
 import store from 'cmn-utils/lib/store';
+import $$ from 'cmn-utils';
 
 // 系统通知, 定义使用什么风格的通知，normal或antdNotice
 const notice = normal;
@@ -17,6 +18,22 @@ export default {
 
   baseUrl: 'http://www.cqhtxxkj.com',
   baseApiPrefix: '/api',
+
+  customUpload: config => {
+    const data = new FormData();
+    let file = config.file
+    data.append('files', file);
+    $$.post('/fs/upload/images', data, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    }).then(dat => {
+      config.onSuccess(dat)
+    }).catch(err => {
+      config.onError(err)
+    })
+
+  },
 
   /**
    * 系统通知
@@ -42,11 +59,11 @@ export default {
      */
     afterResponse: response => {
       const { status, message, errorCode, errorMsg } = response;
+      console.log(response)
       if (status || errorCode == 1000) {
         return response;
       } else if (errorCode) {
-        notice.error(errorMsg);
-        return response;
+        throw new Error(errorMsg);
       } else {
         throw new Error(message);
       }
