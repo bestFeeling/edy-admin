@@ -21,7 +21,7 @@ export default modelEnhance({
           dispatch({
             type: 'getAreaSelectData',
             payload: {
-              parentId: 0
+              id: 0
             }
           })
         }
@@ -33,7 +33,6 @@ export default modelEnhance({
 
     // 获取区域数据
     *getAreaSelectData({ payload = {} }, { call, put }) {
-      console.log(payload)
       let response = yield call(getArea, payload);
       yield put({
         type: 'GET_AREA_DATA_SUCCESS',
@@ -72,12 +71,13 @@ export default modelEnhance({
     },
     // 删除
     *remove({ payload }, { call, put, select }) {
-      const { ids } = payload
+      const { ids, success } = payload
       yield put({
         type: '@request',
         payload: {
           notice: true,
           method: 'delete',
+          success,
           url: `/branch/${ids}`,
         }
       });
@@ -111,7 +111,6 @@ export default modelEnhance({
 
   reducers: {
     GETDATA_SUCCESS(state, { payload }) {
-      console.log(payload, 222)
       let { pageData } = state
       pageData.total = payload.total
       payload.pageSize
@@ -126,27 +125,22 @@ export default modelEnhance({
       const datFormat = (dat) => dat.map(d => {
         return {
           label: d.name,
-          value: { id: d.id, name: d.name },
+          value: d.id,
           isLeaf: d.isLeaf || false,
           ...d
         }
       })
 
       if (payload && Array.isArray(payload.data)) {
-        let dat = datFormat(payload.data)
-        if (state.areaSelectOption.length == 0) {
-          //state.selectOption.push(dat)
+        const { data, nowSelected } = payload
+        let dat = datFormat(data)
+        if (nowSelected.id == 0) {
           return { ...state, areaSelectOption: dat }
         } else {
-          const { data, nowSelected } = payload
-          nowSelected.children = datFormat(data)
+          nowSelected.children = dat
         }
       }
       return { ...state, selectCnt: state.selectCnt + 1 }
     },
-
-    CURRENT_AREA_SELECT(state, { payload }) {
-      return { ...state, currentSelected: payload }
-    }
   }
 })

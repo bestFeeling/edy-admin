@@ -10,6 +10,9 @@ export default (self) => [
     title: 'ID',
     name: 'id',
     tableItem: {},
+    formItem: {
+      type: 'hidden'
+    },
     searchItem: {
       group: 'abc'
     }
@@ -50,14 +53,24 @@ export default (self) => [
   },
 
   {
-    title: 'directoryId',
-    name: '区域',
+    title: '区域',
+    name: 'directoryId',
     tableItem: {},
     formItem: {
-      type: 'cascade',
+      type: !self.state.record ? 'cascade' : 'hidden',
       options: self.props.branch.areaSelectOption,
       changeOnSelect: true,
-      loadData: self.loadSelectData
+      loadData: self.loadSelectData,
+    }
+  },
+
+  {
+    title: '区域',
+    name: 'directoryName',
+    tableItem: {},
+    formItem: {
+      type: !self.state.record ? 'hidden' : '',
+      disabled: true
     }
   },
 
