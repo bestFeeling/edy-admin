@@ -7,6 +7,7 @@ import Register from './Register';
 import Blank from './Blank';
 import Notice from './Notice'
 import Branch from './Branch'
+import Admin from './Admin'
 import Test from './Test'
 
 /**
@@ -40,6 +41,7 @@ const routesConfig = app => [
       Notice(app),
       Branch(app),
       Test(app),
+      Admin(app),
       NotFound()
     ]
   }
