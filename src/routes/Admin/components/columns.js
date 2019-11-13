@@ -18,11 +18,31 @@ export default (self) => [
   {
     title: '账号',
     name: 'username',
+    tableItem: {},
     searchItem: {
-      group: 'abc'
+      
+    },
+    formItem: {
+      rules: [{
+        required: true, 
+        message: '请输入字典值' 
+      }, {
+        pattern: /^[a-zA-Z0-9_]{1,20}$/,
+        message: '字典类型不允许输入特殊字符'
+      }]
     }
   },
-
+  {
+    title: '密码',
+    name: 'password',
+    formItem: {
+      type: "password",
+      rules: [{
+        required: true, 
+        message: '请输入密码' 
+      }]
+    }
+  },
   {
     title: '电话',
     name: 'phone',
@@ -30,26 +50,40 @@ export default (self) => [
     searchItem: {
       group: 'abc'
     },
-    formItem: {}
+    formItem: {
+      type: "number",
+      rules: [{
+        required: true, 
+        message: '请输入电话' 
+      }]
+    }
   },
   {
     title: '状态',
     name: 'enable',
-    formItem: {
-      type: 'textarea'
+    tableItem: {
+      render: (item) => {
+        return <span>
+          { item ? "激活":"关闭"}
+        </span>
+      }
     },
   },
   {
     title: '是否内建',
     name: 'isBuild',
-    formItem: {}
+    tableItem: {
+      render: (item) => {
+        return <span>
+          { item ? "是":"否"}
+        </span>
+      }
+    },
   },
   {
     title: '创建时间',
     name: 'createTime',
-    formItem: {
-      type: 'date'
-    }
+    tableItem: {},
   },
   {
     title: '更新时间',
@@ -58,7 +92,6 @@ export default (self) => [
     searchItem: {
       group: 'abc'
     },
-    formItem: {}
   },
   {
     title: '操作',
@@ -69,7 +102,7 @@ export default (self) => [
           {/* <Button tooltip="修改" onClick={e => self.onUpdate(record)}>
             <Icon type="edit" />
           </Button> */}
-          {
+          {/* {
             record.isStick ? (
               <Button tooltip="取消置顶" onClick={e => self.setStick({ id: record.id, val: !record.isStick })}>
                 <Icon type="down" antd />
@@ -79,22 +112,22 @@ export default (self) => [
                   <Icon type="up" antd />
                 </Button>
               )
-          }
+          } */}
           {
-            record.isPush ? (
-              <Button tooltip="下架" onClick={e => self.setPush({ id: record.id, val: !record.isPush })}>
-                <Icon type="minus-circle" antd />
+            record.enable ? (
+              <Button tooltip="关闭" onClick={e => self.setEnable({ id: record.id, val: !record.enable })}>
+                <Icon type="eye-invisible" antd />
               </Button>
             ) : (
-                <Button tooltip="上架" onClick={e => self.setPush({ id: record.id, val: !record.isPush })}>
-                  <Icon type="plus-circle" antd />
+                <Button tooltip="激活" onClick={e => self.setEnable({ id: record.id, val: !record.enable })}>
+                  <Icon type="eye" antd />
                 </Button>
               )
           }
 
-          <Button tooltip="删除" onClick={e => self.onDelete(record)}>
+          {/* <Button tooltip="删除" onClick={e => self.onDelete(record)}>
             <Icon type="trash" />
-          </Button>
+          </Button> */}
 
           {/* <Button tooltip="跳转到新路由">
             <Link to={"/crud/detail?id=" + record.id}>

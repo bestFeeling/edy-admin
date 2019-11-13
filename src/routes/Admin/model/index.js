@@ -27,31 +27,59 @@ export default modelEnhance({
 
   effects: {
 
-        // 进入页面加载
-        *init({ payload }, { call, put, select }) {
-          yield put({
-            type: 'getList'
-          });
-        },
+    // 进入页面加载
+    *init({ payload }, { call, put, select }) {
+      yield put({
+        type: 'getList'
+      });
+    },
 
-        
-        // 获取列表
-        *getList({ payload = {} }, { call, put, select }) {
-          const { pageData } = yield select(state => state.admin);
-          payload.pageNumber = payload.pageNumber || pageData.pageNum
-          payload.pageSize = payload.pageSize || pageData.pageSize
-          yield put({
-            type: '@request',
-            afterResponse: resp => resp.data,
-            payload: {
-              valueField: 'admins',
-              method: 'GET',
-              actionType: 'GETDATA',
-              url: `/admin/list`,
-              data: payload
-            }
-          });
+    // 保存 之后查询分页
+    *save({ payload }, { call, put, select, take }) {
+      const { values, success } = payload;
+      yield put.resolve({
+        type: '@request',
+        payload: {
+          admin: true,
+          url: '/admin/save',
+          success,
+          data: values
         }
+      });
+    },
+
+    //激活 
+    *setEnable({ payload = {} }, { call, put }) {
+      const { id, val, success } = payload
+      yield put({
+        type: '@request',
+        payload: {
+          method: 'put',
+          success,
+          url: `/admin/${id}/${val}`
+        }
+      })
+    },
+
+
+
+    // 获取列表
+    *getList({ payload = {} }, { call, put, select }) {
+      const { pageData } = yield select(state => state.admin);
+      payload.pageNumber = payload.pageNumber || pageData.pageNum
+      payload.pageSize = payload.pageSize || pageData.pageSize
+      yield put({
+        type: '@request',
+        afterResponse: resp => resp.data,
+        payload: {
+          valueField: 'admins',
+          method: 'GET',
+          actionType: 'GETDATA',
+          url: `/admin/list`,
+          data: payload
+        }
+      });
+    }
 
   },
 
