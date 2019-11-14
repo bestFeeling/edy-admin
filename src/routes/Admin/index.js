@@ -1,10 +1,11 @@
+// 管理员模块
 import { dynamicWrapper, createRoute } from '@/utils/core';
 
 export const routeConfig = {
-  path: '/notice',
-  name: '公告模块',
-  title: '公告模块',
-  sort: 1
+  path: '/admin',
+  name: '管理员模块',
+  title: '管理员模块',
+  sort: 9
 }
 const routesConfig = app => ({
     ...routeConfig,
