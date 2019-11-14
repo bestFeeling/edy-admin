@@ -55,7 +55,6 @@ export default (self) => [
   {
     title: '区域',
     name: 'directoryId',
-    tableItem: {},
     formItem: {
       type: !self.state.record ? 'cascade' : 'hidden',
       options: self.props.branch.areaSelectOption,

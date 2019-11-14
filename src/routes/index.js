@@ -7,6 +7,8 @@ import Register from './Register';
 import Blank from './Blank';
 import Notice from './Notice'
 import Branch from './Branch'
+import BisService from './BisService'
+import User from './User'
 
 /**
  * 主路由配置
@@ -38,6 +40,8 @@ const routesConfig = app => [
       Blank(app),
       Notice(app),
       Branch(app),
+      BisService(app),
+      User(app),
       NotFound()
     ]
   }

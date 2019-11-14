@@ -60,6 +60,12 @@ export default {
     afterResponse: response => {
       const { status, message, errorCode, errorMsg } = response;
       console.log(response)
+
+      // 1008 重新登录
+      if (errorCode && errorCode === 1008) {
+        window.localStorage.clear()
+        window.location.reload()
+      }
       if (status || errorCode == 1000) {
         return response;
       } else if (errorCode) {

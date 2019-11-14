@@ -94,7 +94,11 @@ class TableControlled extends Component {
   }
 
   onSelect = (keys, rows) => {
-    const { modal, onChange } = this.props;
+    const { modal, onChange, max, rowKey } = this.props;
+    if (max) {
+      rows = rows.slice(-max)
+      keys = rows.map(r => r[rowKey])
+    }
     this.setState({ value: keys, rows });
 
     if (onChange && !modal) {
@@ -110,7 +114,6 @@ class TableControlled extends Component {
       this.setState({
         loading: true
       });
-
       const newDataSource = await loadData(
         dataSource.jumpPage(pageNum, pageSize)
       );
@@ -167,7 +170,6 @@ class TableControlled extends Component {
       ...otherProps
     } = this.props;
     const { dataSource, value, rows, loading, visible } = this.state;
-
     const dataTableProps = {
       loading,
       columns,
@@ -183,15 +185,15 @@ class TableControlled extends Component {
         pagination === false
           ? false
           : {
-              showSizeChanger: false,
-              showQuickJumper: false,
-              ...pagination
-            }
+            showSizeChanger: false,
+            showQuickJumper: false,
+            ...pagination
+          }
     };
     if (modal || disabled) {
       return (
         <div>
-          <div onClick={disabled ? () => {} : this.showModal}>
+          <div onClick={disabled ? () => { } : this.showModal}>
             <Select
               readOnly
               disabled={!!disabled}
@@ -208,10 +210,10 @@ class TableControlled extends Component {
                   </Option>
                 ))
               ) : (
-                <Option key="_selected" value="_selected">
-                  已选择{rows.length}项
+                  <Option key="_selected" value="_selected">
+                    已选择{rows.length}项
                 </Option>
-              )}
+                )}
             </Select>
           </div>
           <Modal
