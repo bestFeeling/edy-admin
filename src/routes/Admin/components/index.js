@@ -163,7 +163,7 @@ export default class extends BaseComponent {
         <ModalForm {...modalFormProps} />
 
         <Footer>
-          xxx
+          <Pagination {...dataTableProps} />
         </Footer>
 
       </Layout>
