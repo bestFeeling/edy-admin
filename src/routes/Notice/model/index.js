@@ -123,7 +123,7 @@ export default modelEnhance({
       let { pageData } = state
       pageData.total = payload.total
       payload.pageSize
-      pageData.pageNum = payload.pageNumber ? payload.pageNumber : 1
+      pageData.pageNum = payload.pageNumber ? payload.pageNumber - 1 : 1
       pageData.list = payload.contents
 
       return { ...state, ...pageData }

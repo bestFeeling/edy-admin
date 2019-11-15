@@ -66,7 +66,7 @@ export default modelEnhance({
     // 获取列表
     *getList({ payload = {} }, { call, put, select }) {
       const { pageData } = yield select(state => state.admin);
-      payload.pageNumber = payload.pageNumber || pageData.pageNum
+      payload.pageNumber = payload.pageNumber ? payload.pageNumber - 1 : 1
       payload.pageSize = payload.pageSize || pageData.pageSize
       yield put({
         type: '@request',
@@ -90,7 +90,7 @@ export default modelEnhance({
       let { pageData } = state
       pageData.total = payload.total
       payload.pageSize
-      pageData.pageNum = payload.pageNumber ? payload.pageNumber : 1
+      pageData.pageNum = payload.pageNumber ? payload.pageNumber - 1 : 1
       pageData.list = payload.contents
 
       return { ...state, ...pageData }

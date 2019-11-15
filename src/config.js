@@ -42,7 +42,7 @@ export default {
 
   // 异步请求配置
   request: {
-    prefix: '/api',
+    prefix: process.env.NODE_ENV === 'development' ? '/api' : '/',
 
     // 每次请求头部都会带着这些参数
     withHeaders: () => ({

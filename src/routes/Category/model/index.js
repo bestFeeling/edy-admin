@@ -2,25 +2,22 @@ import modelEnhance from '@/utils/modelEnhance';
 import PageHelper from '@/utils/pageHelper';
 
 export default modelEnhance({
-  namespace: 'user',
+  namespace: 'category',
 
   state: {
     pageData: PageHelper.create(),
-    branchData: PageHelper.create()
+    types: []
   },
 
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(({ pathname }) => {
-        if (pathname && pathname.indexOf('/user') > -1) {
+        if (pathname && pathname.indexOf('/category') > -1) {
           dispatch({
             type: 'getList'
           })
           dispatch({
-            type: 'getBranchList',
-            payload: {
-              id: 0
-            }
+            type: 'getTypes'
           })
         }
       })
@@ -30,8 +27,9 @@ export default modelEnhance({
   effects: {
     // 查询分页
     *getList({ payload = {} }, { call, put, select }) {
-      const { pageData } = yield select(state => state.user);
-      payload.pageNumber = payload.pageNumber || pageData.pageNum || 1
+      const { pageData } = yield select(state => state.category);
+      payload.pageNumber = payload.pageNumber || pageData.pageNum
+
       payload.pageSize = payload.pageSize || pageData.pageSize
       yield put({
         type: '@request',
@@ -39,24 +37,20 @@ export default modelEnhance({
         payload: {
           method: 'GET',
           actionType: 'GETDATA',
-          url: `/user/list`,
+          url: `/category/list`,
           data: payload
         }
       });
     },
 
-    *getBranchList({ payload = {} }, { call, put, select }) {
-      const { branchData } = yield select(state => state.user);
-      payload.pageNumber = payload.pageNumber || branchData.pageNum || 1
-      payload.pageSize = payload.pageSize || branchData.pageSize
+    *getTypes({ payload = {} }, { call, put, select }) {
       yield put({
         type: '@request',
         afterResponse: resp => resp.data,
         payload: {
           method: 'GET',
-          actionType: 'GET_BRANCH',
-          url: `/branch/list`,
-          data: payload
+          actionType: 'GET_TYPE',
+          url: `/category/types`,
         }
       });
     },
@@ -68,12 +62,26 @@ export default modelEnhance({
         type: '@request',
         payload: {
           notice: true,
-          url: '/user/save',
+          url: '/category/save',
           success,
           data: values
         }
       });
     },
+
+    *update({ payload }, { call, put, select, take }) {
+      const { values, success } = payload;
+      yield put.resolve({
+        type: '@request',
+        payload: {
+          notice: true,
+          url: '/category/update',
+          success,
+          data: values
+        }
+      });
+    },
+
     // 删除
     *remove({ payload }, { call, put, select }) {
       const { ids, success } = payload
@@ -83,7 +91,7 @@ export default modelEnhance({
           notice: true,
           method: 'delete',
           success,
-          url: `/user/${ids}`,
+          url: `/category/${ids}`,
         }
       });
     },
@@ -95,7 +103,7 @@ export default modelEnhance({
         payload: {
           method: 'put',
           success,
-          url: `/user/${id}/${val}`
+          url: `/category/${id}/${val}`
         }
       })
     },
@@ -106,20 +114,14 @@ export default modelEnhance({
       let { pageData } = state
       pageData.total = payload.total
       pageData.pageSize = payload.pageSize
-      pageData.pageNum = payload.pageNumber ? payload.pageNumber - 1 : 1
+      pageData.pageNum = payload.pageNumber + 1
       pageData.list = payload.contents
 
       return { ...state, pageData }
     },
 
-    GET_BRANCH_SUCCESS(state, { payload }) {
-      let { branchData } = state
-      branchData.total = payload.total
-      branchData.pageSize = payload.pageSize
-      branchData.pageNum = payload.pageNumber ? payload.pageNumber - 1 : 1
-      branchData.list = payload.contents
-
-      return { ...state, branchData }
+    GET_TYPE_SUCCESS(state, { payload }) {
+      return { ...state, ...{ types: payload } }
     }
   }
 })

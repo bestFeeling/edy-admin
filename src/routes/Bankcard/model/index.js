@@ -1,26 +1,24 @@
 import modelEnhance from '@/utils/modelEnhance';
 import PageHelper from '@/utils/pageHelper';
+import { getDetail } from '../service'
 
 export default modelEnhance({
-  namespace: 'user',
+  namespace: 'bank',
 
   state: {
     pageData: PageHelper.create(),
-    branchData: PageHelper.create()
+    banks: []
   },
 
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(({ pathname }) => {
-        if (pathname && pathname.indexOf('/user') > -1) {
+        if (pathname && pathname.indexOf('/bankCard') > -1) {
           dispatch({
             type: 'getList'
           })
           dispatch({
-            type: 'getBranchList',
-            payload: {
-              id: 0
-            }
+            type: 'getBanks'
           })
         }
       })
@@ -30,9 +28,10 @@ export default modelEnhance({
   effects: {
     // 查询分页
     *getList({ payload = {} }, { call, put, select }) {
-      const { pageData } = yield select(state => state.user);
-      payload.pageNumber = payload.pageNumber || pageData.pageNum || 1
+      const { pageData } = yield select(state => state.bank);
+      payload.pageNumber = payload.pageNumber || pageData.pageNumber
       payload.pageSize = payload.pageSize || pageData.pageSize
+
       yield put({
         type: '@request',
         afterResponse: resp => resp.data,
@@ -45,18 +44,14 @@ export default modelEnhance({
       });
     },
 
-    *getBranchList({ payload = {} }, { call, put, select }) {
-      const { branchData } = yield select(state => state.user);
-      payload.pageNumber = payload.pageNumber || branchData.pageNum || 1
-      payload.pageSize = payload.pageSize || branchData.pageSize
+    *getBanks({ payload = {} }, { call, put, select }) {
       yield put({
         type: '@request',
         afterResponse: resp => resp.data,
         payload: {
           method: 'GET',
-          actionType: 'GET_BRANCH',
-          url: `/branch/list`,
-          data: payload
+          actionType: 'GET_BANK',
+          url: `/bank/list`,
         }
       });
     },
@@ -68,12 +63,26 @@ export default modelEnhance({
         type: '@request',
         payload: {
           notice: true,
-          url: '/user/save',
+          url: '/bank/save',
           success,
           data: values
         }
       });
     },
+
+    *update({ payload }, { call, put, select, take }) {
+      const { values, success } = payload;
+      yield put.resolve({
+        type: '@request',
+        payload: {
+          notice: true,
+          url: '/bank/update',
+          success,
+          data: values
+        }
+      });
+    },
+
     // 删除
     *remove({ payload }, { call, put, select }) {
       const { ids, success } = payload
@@ -83,19 +92,19 @@ export default modelEnhance({
           notice: true,
           method: 'delete',
           success,
-          url: `/user/${ids}`,
+          url: `/bank/${ids}`,
         }
       });
     },
 
-    *setEnable({ payload = {} }, { call, put }) {
-      const { id, val, success, } = payload
+    *getDetail({ payload = {} }, { call, put }) {
+      let response = yield call(getDetail, payload)
+
       yield put({
-        type: '@request',
+        type: 'setDetail',
         payload: {
-          method: 'put',
-          success,
-          url: `/user/${id}/${val}`
+          parent: payload,
+          data: response.data || []
         }
       })
     },
@@ -106,20 +115,26 @@ export default modelEnhance({
       let { pageData } = state
       pageData.total = payload.total
       pageData.pageSize = payload.pageSize
-      pageData.pageNum = payload.pageNumber ? payload.pageNumber - 1 : 1
+      pageData.pageNum = payload.pageNumber + 1
       pageData.list = payload.contents
 
       return { ...state, pageData }
     },
 
-    GET_BRANCH_SUCCESS(state, { payload }) {
-      let { branchData } = state
-      branchData.total = payload.total
-      branchData.pageSize = payload.pageSize
-      branchData.pageNum = payload.pageNumber ? payload.pageNumber - 1 : 1
-      branchData.list = payload.contents
+    GET_BANK_SUCCESS(state, { payload }) {
+      return { ...state, ...{ banks: payload } }
+    },
 
-      return { ...state, branchData }
+
+    setDetail(state, { payload }) {
+      const { parent, data } = payload
+      let index = state.pageData.list.findIndex(it => it.id == parent.id)
+      if (index != -1) {
+        let p = PageHelper.create()
+        p.list = data
+        state.pageData.list[index]['details'] = p
+      }
+      return { ...state }
     }
   }
 })
