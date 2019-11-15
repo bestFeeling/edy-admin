@@ -16,7 +16,7 @@ export default {
    */
   htmlTitle: 'DBAdmin - {title}',
 
-  baseUrl: 'http://www.cqhtxxkj.com',
+  baseUrl: 'http://ydy.cqhtxxkj.com',
   baseApiPrefix: '/api',
 
   customUpload: config => {
@@ -42,7 +42,8 @@ export default {
 
   // 异步请求配置
   request: {
-    prefix: process.env.NODE_ENV === 'development' ? '/api' : '/',
+    // prefix: '/api',
+    prefix: process.env.NODE_ENV === 'development' ? '/api' : 'http://ydy.cqhtxxkj.com',
 
     // 每次请求头部都会带着这些参数
     withHeaders: () => ({
