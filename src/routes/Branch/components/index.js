@@ -3,11 +3,13 @@ import React from 'react';
 import { connect } from 'dva';
 import { Layout, Button } from 'antd';
 import BaseComponent from 'components/BaseComponent';
+import Mask from 'components/Mask';
 import Toolbar from 'components/Toolbar';
 import SearchBar from 'components/SearchBar';
 import DataTable from 'components/DataTable';
 import { ModalForm } from 'components/Modal';
 import createColumns from './columns';
+import { normal, antdNotice } from 'components/Notification';
 import './index.less';
 const { Content, Header, Footer } = Layout;
 const Pagination = DataTable.Pagination;
@@ -20,7 +22,9 @@ export default class extends BaseComponent {
   state = {
     visible: false,
     record: null,
-    rows: []
+    rows: [],
+    maskVisible: false,
+    dataSrc: null
   }
 
   constructor(props) {
@@ -72,7 +76,18 @@ export default class extends BaseComponent {
       visible: true
     });
   };
-
+  onPreview = item => {
+    this.setState({
+      dataSrc: item,
+      maskVisible: true
+    });
+  };
+  onClose = () => {
+    this.setState({
+      maskVisible: false
+    });
+  };
+  
   render() {
     const { branch, loading, dispatch } = this.props;
 
@@ -133,6 +148,16 @@ export default class extends BaseComponent {
         const { directoryId = [] } = values
         values.directoryId = directoryId[directoryId.length - 1]
 
+        // console.log(values)
+        if (values.icons && values.icons.length > 0) {
+          values.icons = values.icons[0].response.data || ''
+        }
+        if (!values.icons) {
+          normal.error('没有获取到封面图片数据！')
+          return
+        }
+        
+
         dispatch({
           type: 'branch/save',
           payload: {
@@ -179,6 +204,23 @@ export default class extends BaseComponent {
           <Pagination {...dataTableProps} />
         </Footer>
         <ModalForm {...modalFormProps} />
+
+        <Mask visible={this.state.maskVisible} onClose={this.onClose} closable>
+          <img
+            src={this.state.dataSrc}
+            alt=""
+            style={{
+              position: 'absolute',
+              margin: 'auto',
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              maxHeight: '80%',
+            }}
+          />
+        </Mask>
+
       </Layout>
     );
   }

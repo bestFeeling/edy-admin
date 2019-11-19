@@ -3,7 +3,8 @@ import DataTable from 'components/DataTable';
 import Icon from 'components/Icon';
 import Button from 'components/Button';
 import { Link } from 'dva/router';
-import { Tag } from 'antd';
+import LazyLoad from 'components/LazyLoad';
+import { Tag, Card } from 'antd';
 
 export default (self) => [
   {
@@ -76,8 +77,30 @@ export default (self) => [
   {
     title: 'icons',
     name: 'icons',
-    tableItem: {},
-    formItem: {}
+    tableItem: {
+      render: (item) => {
+        return (
+          <Card
+            hoverable
+            style={{ display: 'inherit' }}
+            bodyStyle={{ padding: 0 }}
+            cover={
+              <LazyLoad
+                dataSrc={item}
+                style={{ height: '60px', width: 'auto' }}
+                onClick={e => self.onPreview(item)}
+              />
+            }
+          >
+          </Card>
+        )
+      }
+    },
+    formItem: {
+      type: 'upload',
+      action: '/fs/upload/image',
+      max: 1
+    }
   },
 
   {

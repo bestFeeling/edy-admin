@@ -90,6 +90,12 @@ export default (self) => [
     name: 'address',
     formItem: {},
   },
+  {
+    title: 'Email',
+    name: 'email',
+    formItem: {},
+    tableItem: {},
+  },
 
   {
     title: '身份证Id',
