@@ -13,6 +13,7 @@ import Admin from './Admin'
 import Test from './Test'
 import Category from './Category'
 import Bankcard from './Bankcard'
+import PushMessage from './PushMessge'
 
 /**
  * 主路由配置
@@ -50,6 +51,7 @@ const routesConfig = app => [
       Admin(app),
       Category(app),
       Bankcard(app),
+      PushMessage(app),
       NotFound()
     ]
   }
