@@ -113,11 +113,11 @@ export default (self) => [
           }
           {
             record.isPush ? (
-              <Button tooltip="已推送" onClick={e => self.setPush({ id: record.id })}>
+              <Button tooltip="已推送" onClick={e => message.info("该消息已被推送.")} disabled>
                 <Icon type="eye" antd />
               </Button>
             ) : (
-                <Button tooltip="推送" onClick={e => message.info("该消息已被推送.")} disable="true">
+                <Button tooltip="推送" onClick={e => self.setPush({ id: record.id })} >
                   <Icon type="eye" antd />
                 </Button>
               )
