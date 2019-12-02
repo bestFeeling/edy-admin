@@ -7,6 +7,7 @@ import { routeConfig as Admin } from './Admin'
 import { routeConfig as Category } from './Category'
 import { routeConfig as Bankcard } from './Bankcard'
 import { routeConfig as PushMessage } from './PushMessge'
+import { routeConfig as Task } from './Task'
 
 const route = []
 
@@ -19,6 +20,7 @@ route.push(Admin)
 route.push(Category)
 route.push(Bankcard)
 route.push(PushMessage)
+route.push(Task)
 
 export default route.sort((a, b) => {
   return a.sort > b.sort
