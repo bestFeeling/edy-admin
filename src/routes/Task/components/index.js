@@ -41,65 +41,20 @@ export default class extends BaseComponent {
     })
   }
 
-  handleDelete = records => {
-    const self = this
+  onSetting = (val,type) => {
+    const self = this;
+    if(type===""){
+      return ;
+    }
     this.props.dispatch({
-      type: '---/remove',
-      payload: {
-        ids: records.map(r => r.id).join(','),
-        success: this.refresh.bind(self)
-      }
-    });
-  };
-
-  //提交审核
-  onCheck = val => {
-    const self = this
-    this.props.dispatch({
-      type: 'task/setCheck',
+      type: `task/${type}`,
       payload: {
         ...val,
         success: this.refresh.bind(self)
       }
     });
-  }
 
-  //支付
-  onPayment = val => {
-    const self = this
-    this.props.dispatch({
-      type: 'task/setPayment',
-      payload: {
-        ...val,
-        success: this.refresh.bind(self)
-      }
-    });
   }
-
-  //关闭 任务
-  onCloseTask = val => {
-    const self = this
-    this.props.dispatch({
-      type: 'task/setClose',
-      payload: {
-        ...val,
-        success: this.refresh.bind(self)
-      }
-    });
-  }
-
-  //完成 任务
-  onFinish = val => {
-    const self = this
-    this.props.dispatch({
-      type: 'task/setFinish',
-      payload: {
-        ...val,
-        success: this.refresh.bind(self)
-      }
-    });
-  }
-
   
   render() {
     const { task, loading, dispatch } = this.props;

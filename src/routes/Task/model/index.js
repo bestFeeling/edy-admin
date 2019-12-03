@@ -70,7 +70,7 @@ export default modelEnhance({
         payload: {
           method: 'put',
           success,
-          url: `/task/sponsor/${id}/false`
+          url: `/task/sponsor/${id}/true`
         }
       })
     },
@@ -114,7 +114,7 @@ export default modelEnhance({
       })
     },
 
-     // 关闭
+     // 完成任务
      *setFinish({ payload = {} }, { call, put }) {
       const { id,success } = payload
       yield put({

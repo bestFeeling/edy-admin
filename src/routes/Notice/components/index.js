@@ -41,10 +41,12 @@ export default class extends BaseComponent {
   }
 
   handleDelete = records => {
+    const self = this
     this.props.dispatch({
       type: 'notice/remove',
       payload: {
         ids: records.map(r => r.id).join(','),
+        success: this.refresh.bind(self)
       }
     });
   };
