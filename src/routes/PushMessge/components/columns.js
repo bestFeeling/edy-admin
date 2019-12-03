@@ -6,6 +6,7 @@ import LazyLoad from 'components/LazyLoad';
 import { Tag, Card, Select, message } from 'antd';
 import config from '@/config';
 const { Option } = Select;
+const  { baseUrl } = config;
 
 export default (self) => [
   {
@@ -48,7 +49,25 @@ export default (self) => [
   {
     title: '图标',
     name: 'icon',
-    tableItem: {},
+    tableItem: {
+      render: (item) => {
+        return (
+          <Card
+            hoverable
+            style={{ display: 'inherit' }}
+            bodyStyle={{ padding: 0 }}
+            cover={
+              <LazyLoad
+                dataSrc={`${baseUrl}${item}`}
+                style={{ height: '60px', width: 'auto' }}
+                onClick={e => self.onPreview(item)}
+              />
+            }
+          >
+          </Card>
+        )
+      }
+    },
     formItem: {
       type: 'upload',
       action: '/fs/upload/image',

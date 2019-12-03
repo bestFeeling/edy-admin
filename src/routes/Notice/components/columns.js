@@ -5,6 +5,8 @@ import Button from 'components/Button';
 import LazyLoad from 'components/LazyLoad';
 import { Tag, Card } from 'antd';
 import config from '@/config';
+const  { baseUrl } = config;
+
 
 export default (self) => [
   {
@@ -44,7 +46,7 @@ export default (self) => [
             bodyStyle={{ padding: 0 }}
             cover={
               <LazyLoad
-                dataSrc={item}
+                dataSrc={`${baseUrl}${item}`}
                 style={{ height: '120px', width: 'auto' }}
                 onClick={e => self.onPreview(item)}
               />
