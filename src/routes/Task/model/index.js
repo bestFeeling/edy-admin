@@ -7,7 +7,37 @@ export default modelEnhance({
 
   state: {
     pageData: PageHelper.create(),
-    taskData: []
+    taskData: [],
+    status: [
+      {
+        code: 0,
+        type: "报名中"
+      },
+      {
+        code: 1,
+        type: "进行中"
+      },
+      {
+        code: 2,
+        type: "验收"
+      },
+      {
+        code: 3,
+        type: "待付款"
+      },
+      {
+        code: 4,
+        type: "已付款"
+      },
+      {
+        code: 5,
+        type: "确认付款"
+      },
+      {
+        code: 6,
+        type: "已完成"
+      },
+    ]
   },
 
   subscriptions: {

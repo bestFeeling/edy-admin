@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Layout, Button } from 'antd';
+import { Layout, Button, message } from 'antd';
 import BaseComponent from 'components/BaseComponent';
 import Mask from 'components/Mask';
 import Toolbar from 'components/Toolbar';
@@ -41,9 +41,12 @@ export default class extends BaseComponent {
     })
   }
 
+  // 
   onSetting = (val,type) => {
     const self = this;
     if(type===""){
+      // console.log(val);
+      message.info(`任务当前状态-${val["statusName"]}-不可操作`)
       return ;
     }
     this.props.dispatch({
@@ -53,7 +56,18 @@ export default class extends BaseComponent {
         success: this.refresh.bind(self)
       }
     });
+  }
 
+  // 
+  onClosing = (val) => {
+    const self = this;
+    this.props.dispatch({
+      type: `task/setClose`,
+      payload: {
+        ...val,
+        success: this.refresh.bind(self)
+      }
+    });
   }
   
   render() {

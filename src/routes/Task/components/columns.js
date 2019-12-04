@@ -4,7 +4,7 @@ import Icon from 'components/Icon';
 import Button from 'components/Button';
 import { Link } from 'dva/router';
 import LazyLoad from 'components/LazyLoad';
-import { Tag, Card } from 'antd';
+import { Tag, Card, Divider } from 'antd';
 
 
 export default (self) => [
@@ -47,19 +47,50 @@ export default (self) => [
   {
     title: '奖励金额',
     name: 'rebatePrice',
-    tableItem: {},
+    tableItem: {
+      render: (text, record) => {
+        switch (text) {
+          case "null":
+              return <span>0.00</span>;
+          default:
+            return <span>{text}</span>;
+        }
+      }
+    },
     
   },
   {
-    title: '折扣',
-    name: '奖励百分比',
-    tableItem: {},
+    title: '奖励百分比',
+    name: 'rebatePercentage',
+    tableItem: {
+      render: (text, record) => {
+        switch (text) {
+          case "null":
+              return <span>0.0</span>;
+          default:
+            return <span>{text}</span>;
+        }
+      }
+    },
     
   },
   {
     title: '支付方式',
     name: 'paymentType',
-    tableItem: {},
+    tableItem: {
+      render: (text, record) => {
+        switch (text) {
+          case 0:
+              return <span>一次性支付</span>;
+          case 1:
+                  return <span>返点支付</span>;
+          case 2:
+              return <span>无支付</span>;
+          default:
+              break;
+        }
+      }
+    },
     
   },
   {
@@ -71,7 +102,16 @@ export default (self) => [
   {
     title: '完成时间',
     name: 'finishTime',
-    tableItem: {},
+    tableItem: {
+      render: (text, record) => {
+        switch (text) {
+          case "null":
+              return <span>0.0</span>;
+          default:
+            return <span>{new Date(text).toLocaleString()}</span>;
+        }
+      }
+    },
     
   },
   {
@@ -102,7 +142,10 @@ export default (self) => [
       }
     },
     searchItem: {
-      group: 'abc'
+      group: 'abc',
+      type: 'select',
+      width: 160, 
+      dict: self.props.task.status.map(o => { return { 'code': o.code, 'codeName': o.type } })
     }
   },
   {
@@ -113,8 +156,8 @@ export default (self) => [
         let statusName = "", type = -1;
         switch (record.status) {
           case 0:
-              statusName = "报名中";
-              type = "";
+                statusName = "报名中";
+                type = "";
             break;
             case 1:
                 statusName = "审核";
@@ -149,10 +192,19 @@ export default (self) => [
             break;
         }
 
+        record= {
+          ...record,
+          statusName
+        }
+
         return (
           <DataTable.Oper>
           <Button tooltip={statusName} onClick={e => self.onSetting(record,type)}>
             <Icon type="file-protect" antd/>
+          </Button>
+          <Divider type="vertical"/>
+          <Button tooltip="关闭" onClick={e => self.onClosing(record)}>
+            <Icon type="stop" antd/>
           </Button>
           {/* <Button tooltip="审核" onClick={e => self.onCheck(record)}>
             <Icon type="file-protect" antd/>
