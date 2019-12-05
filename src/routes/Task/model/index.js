@@ -81,78 +81,78 @@ export default modelEnhance({
   
     //审核
     *setCheck({ payload = {} }, { call, put }) {
-      const { id,success } = payload
+      const { orderId,success } = payload
       yield put({
         type: '@request',
         payload: {
           method: 'put',
           success,
-          url: `/task/acceptance/${id}`
+          url: `/task/acceptance/${orderId}`
         }
       })
     },
 
     // 确认审核
     *setComfirmCheck({ payload = {} }, { call, put }) {
-      const { id,success } = payload
+      const { orderId,success } = payload
       yield put({
         type: '@request',
         payload: {
           method: 'put',
           success,
-          url: `/task/sponsor/${id}/true`
+          url: `/task/sponsor/${orderId}/true`
         }
       })
     },
 
     // 支付
     *setPayment({ payload = {} }, { call, put }) {
-      const { id,success } = payload
+      const { orderId,success } = payload
       yield put({
         type: '@request',
         payload: {
           method: 'put',
           success,
-          url: `/task/pay/${id}`
+          url: `/task/pay/${orderId}`
         }
       })
     },
 
     // 确认支付
     *setComfirmPayment({ payload = {} }, { call, put }) {
-      const { id,success } = payload
+      const { orderId,success } = payload
       yield put({
         type: '@request',
         payload: {
           method: 'put',
           success,
-          url: `/task/confirmPayment/${id}`
+          url: `/task/confirmPayment/${orderId}`
         }
       })
     },
 
     // 关闭
     *setClose({ payload = {} }, { call, put }) {
-      const { id,success } = payload
+      const { orderId,success } = payload
       yield put({
         type: '@request',
         payload: {
           method: 'put',
           success,
-          url: `/task/close/${id}`
+          url: `/task/close/${orderId}`
         }
       })
     },
 
      // 完成任务
      *setFinish({ payload = {} }, { call, put }) {
-      const { id,success } = payload
+      const { orderId,success } = payload
       yield put({
         type: '@request',
         payload: {
           method: 'put',
           success,
-          url: `/task/commit/${id}`
+          url: `/task/commit/${orderId}`
         }
       })
     },
