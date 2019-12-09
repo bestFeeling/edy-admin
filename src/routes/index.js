@@ -15,6 +15,7 @@ import Category from './Category'
 import Bankcard from './Bankcard'
 import PushMessage from './PushMessge'
 import Task from './Task'
+import Dashboard from './Dashboard'
 
 /**
  * 主路由配置
@@ -46,7 +47,7 @@ const routesConfig = app => [
       Blank(app),
       Notice(app),
       Branch(app),
-      BisService(app),
+      // BisService(app),
       User(app),
       Test(app),
       Admin(app),
@@ -54,6 +55,7 @@ const routesConfig = app => [
       Bankcard(app),
       PushMessage(app),
       Task(app),
+      Dashboard(app),
       NotFound()
     ]
   }
