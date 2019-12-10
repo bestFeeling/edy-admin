@@ -7,6 +7,8 @@ import './index.less';
 const { Content } = Layout;
 const FormItem = Form.Item;
 
+import JSEncrypt from 'jsencrypt/bin/jsencrypt'
+
 @connect(({ login, loading }) => ({
   login,
   loading: loading.models.login
@@ -17,6 +19,17 @@ class Login extends Component {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (!err) {
+
+        const encrypt = new JSEncrypt();
+        encrypt.setPublicKey(`-----BEGIN PUBLIC KEY-----
+        MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCwJHItn9QttBux+PR2rkzBM3sN
+        miG0VR/fRKXiuQqietyLMPCld3KY7+P6WS2ov9s04NDCNzmMG4Vj8YgGRBENQUMn
+        a12QKkUb07YwOWCbb/XEtqQx3qHGRWOBtaPPT0lqEuOTAu4ly2vOL7jmjgNqdAGG
+        r3Flt5QBIkXe0KqX4wIDAQAB
+        -----END PUBLIC KEY-----
+        `);
+        // values["password"] = encrypt.encrypt(values["password"]);// 加密后的字符串
+        console.log( encrypt.encrypt(values["password"]),values["password"])
         dispatch({
           type: 'login/login',
           payload: values
