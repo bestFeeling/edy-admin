@@ -1,28 +1,33 @@
-
 import React from 'react';
 import { connect } from 'dva';
 import { Layout, Button } from 'antd';
-import { b64tohex, hex2b64, RSAKey } from '../../../utils/rsa'
 import BaseComponent from 'components/BaseComponent';
+import Mask from 'components/Mask';
 import Toolbar from 'components/Toolbar';
 import SearchBar from 'components/SearchBar';
 import DataTable from 'components/DataTable';
 import { ModalForm } from 'components/Modal';
 import createColumns from './columns';
+import { normal, antdNotice } from 'components/Notification';
 import './index.less';
 const { Content, Header, Footer } = Layout;
 const Pagination = DataTable.Pagination;
 
-@connect(({ user, loading }) => ({
-  user,
-  loading
+
+
+@connect(({ level, loading }) => ({
+  level,
+  loading: loading.models.level
 }))
+
 export default class extends BaseComponent {
   state = {
-    visible: false,
     record: null,
-    rows: []
-  }
+    visible: false,
+    rows: [],
+    maskVisible: false,
+    dataSrc: null
+  };
 
   constructor(props) {
     super(props)
@@ -31,47 +36,19 @@ export default class extends BaseComponent {
 
   refresh() {
     this.props.dispatch({
-      type: 'user/getList',
+      type: 'level/getList',
       payload: {
         ...this.formRef.props.form.getFieldsValue()
       }
-    })
-  }
-
-  handleDelete = records => {
-    const self = this
-    this.props.dispatch({
-      type: 'user/remove',
-      payload: {
-        ids: records.map(r => r.id).join(','),
-        success: this.refresh.bind(self)
-      }
-    });
-  };
-
-  setDataState = val => {
-    const self = this
-    this.props.dispatch({
-      type: 'user/setEnable',
-      payload: {
-        ...val,
-        success: this.refresh.bind(self)
-      }
     });
   }
 
-  loadBranchData = (selectedOptions) => {
-    this.props.dispatch({
-      type: 'user/getBranchData',
-      payload: selectedOptions[selectedOptions.length - 1] || {}
-    })
-  }
 
   render() {
-    const { user, loading, dispatch } = this.props;
-
-    const { pageData, branchData } = user;
+    const { level, loading, dispatch } = this.props;
     const columns = createColumns(this);
+    const { levels, pageData } = level;
+
     const { rows, record, visible } = this.state;
     const self = this
 
@@ -79,7 +56,7 @@ export default class extends BaseComponent {
       columns,
       onSearch: values => {
         dispatch({
-          type: 'user/getList',
+          type: 'level/getList',
           payload: {
             ...values,
           }
@@ -88,16 +65,17 @@ export default class extends BaseComponent {
     };
 
     const dataTableProps = {
-      loading: loading.effects['user/getList'],
+      loading,
       columns,
-      rowKey: 'id',
+      rowKey: 'key',
       dataItems: pageData,
+      // selectType: 'checkbox',
       showNum: true,
       isScroll: true,
-      selectedRowKeys: rows.map(item => item.rowKey),
+      selectedRowKeys: rows.map(item => item.key),
       onChange: ({ pageNum, pageSize }) => {
         dispatch({
-          type: 'user/getList',
+          type: 'level/getList',
           payload: {
             pageNumber: pageNum,
             pageSize
@@ -108,7 +86,7 @@ export default class extends BaseComponent {
     };
 
     const modalFormProps = {
-      loading: loading.effects['user/getList'],
+      loading,
       record,
       visible,
       columns,
@@ -121,26 +99,14 @@ export default class extends BaseComponent {
           visible: false
         });
       },
+      // 新增、修改都会进到这个方法中，
+      // 可以使用主键或是否有record来区分状态
       onSubmit: values => {
         const self = this
-        const { branchId, facePhoneCard, reversePhoneCard, portrait } = values
-        values.branchId = branchId.length > 0 ? branchId[0] : ''
-        values.facePhoneCard = facePhoneCard[0].response.data || ''
-        values.reversePhoneCard = reversePhoneCard[0].response.data || ''
-        values.portrait = portrait[0].response.data || ''
-
-        delete values['password_repeat']
-        // 
-        const { loginVal } = this.props.user;
-        let rsaKey= new RSAKey();
-        rsaKey.setPublic(b64tohex(loginVal["modulus"]), b64tohex(loginVal["exponent"]));
-        let enPassword = hex2b64(rsaKey.encrypt(values["password"]));
-        values["password"] = enPassword;
-        values["random"] = loginVal["random"]
-        // 
+        
 
         dispatch({
-          type: 'user/save',
+          type: 'level/save',
           payload: {
             values,
             success: () => {
@@ -155,6 +121,7 @@ export default class extends BaseComponent {
       }
     };
 
+
     return (
       <Layout className="full-layout crud-page">
         <Header>
@@ -164,28 +131,26 @@ export default class extends BaseComponent {
                 <Button type="primary" icon="plus" onClick={this.onAdd}>
                   新增
                 </Button>
-                <Button
-                  disabled={!rows.length}
-                  onClick={e => this.onDelete(rows)}
-                  icon="delete"
-                >
-                  删除
-                </Button>
               </Button.Group>
             }
             pullDown={<SearchBar type="grid" {...searchBarProps} />}
           >
-            <SearchBar wrappedComponentRef={(inst) => this.formRef = inst} group="abc" {...searchBarProps} />
+            {/* <SearchBar wrappedComponentRef={(inst) => this.formRef = inst} group="abc" {...searchBarProps} /> */}
           </Toolbar>
         </Header>
         <Content>
           <DataTable {...dataTableProps} />
         </Content>
-        <Footer>
-          <Pagination {...dataTableProps} />
-        </Footer>
+
         <ModalForm {...modalFormProps} />
+
+        <Footer>
+          {/* <Pagination {...dataTableProps} /> */}
+        </Footer>
+
       </Layout>
     );
   }
+
+
 }

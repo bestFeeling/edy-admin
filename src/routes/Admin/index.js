@@ -5,7 +5,7 @@ export const routeConfig = {
   path: '/admin',
   name: '管理员模块',
   title: '管理员模块',
-  sort: 9
+  sort: 5
 }
 const routesConfig = app => ({
     ...routeConfig,

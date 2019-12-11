@@ -3,8 +3,8 @@ import { dynamicWrapper, createRoute } from '@/utils/core';
 
 export const routeConfig = {
   path: '/dashboard',
-  name: '仪表盘',
-  title: '仪表盘',
+  name: '统计',
+  title: '统计',
   sort: 10
 }
 

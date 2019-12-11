@@ -16,6 +16,7 @@ import Bankcard from './Bankcard'
 import PushMessage from './PushMessge'
 import Task from './Task'
 import Dashboard from './Dashboard'
+import Level from './Level'
 
 /**
  * 主路由配置
@@ -56,6 +57,7 @@ const routesConfig = app => [
       PushMessage(app),
       Task(app),
       Dashboard(app),
+      Level(app),
       NotFound()
     ]
   }

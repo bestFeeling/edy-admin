@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { b64tohex, hex2b64, RSAKey } from '../../../utils/rsa'
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import { Form, Layout, Button, Icon, Input, Checkbox, Spin } from 'antd';
@@ -7,7 +8,10 @@ import './index.less';
 const { Content } = Layout;
 const FormItem = Form.Item;
 
-import JSEncrypt from 'jsencrypt/bin/jsencrypt'
+
+// console.log(rsaKey.setPublic());
+
+
 
 @connect(({ login, loading }) => ({
   login,
@@ -20,16 +24,12 @@ class Login extends Component {
     form.validateFields((err, values) => {
       if (!err) {
 
-        const encrypt = new JSEncrypt();
-        encrypt.setPublicKey(`-----BEGIN PUBLIC KEY-----
-        MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCwJHItn9QttBux+PR2rkzBM3sN
-        miG0VR/fRKXiuQqietyLMPCld3KY7+P6WS2ov9s04NDCNzmMG4Vj8YgGRBENQUMn
-        a12QKkUb07YwOWCbb/XEtqQx3qHGRWOBtaPPT0lqEuOTAu4ly2vOL7jmjgNqdAGG
-        r3Flt5QBIkXe0KqX4wIDAQAB
-        -----END PUBLIC KEY-----
-        `);
-        // values["password"] = encrypt.encrypt(values["password"]);// 加密后的字符串
-        console.log( encrypt.encrypt(values["password"]),values["password"])
+        const { loginVal } = this.props.login;
+        let rsaKey= new RSAKey();
+        rsaKey.setPublic(b64tohex(loginVal["modulus"]), b64tohex(loginVal["exponent"]));
+        let enPassword = hex2b64(rsaKey.encrypt(values["password"]));
+        values["password"] = enPassword;
+        values["random"] = loginVal["random"]
         dispatch({
           type: 'login/login',
           payload: values

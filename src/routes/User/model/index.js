@@ -1,12 +1,15 @@
 import modelEnhance from '@/utils/modelEnhance';
 import PageHelper from '@/utils/pageHelper';
 
+import { rsas } from '../service'
+
 export default modelEnhance({
   namespace: 'user',
 
   state: {
     pageData: PageHelper.create(),
-    branchData: PageHelper.create()
+    branchData: PageHelper.create(),
+    loginVal: []
   },
 
   subscriptions: {
@@ -16,6 +19,10 @@ export default modelEnhance({
           dispatch({
             type: 'getList'
           })
+          dispatch({
+            type: 'rsa'
+          })
+
           dispatch({
             type: 'getBranchList',
             payload: {
@@ -28,6 +35,18 @@ export default modelEnhance({
   },
 
   effects: {
+
+    // 获取Rsa
+    *rsa({ payload = {} }, { call, put, select }) {
+
+      const { status, message, data, errorCode, errorMsg } = yield call(rsas, payload);
+      
+      yield put({
+        type: 'getDetailSuccess',
+        payload: data
+      });
+    },
+            
     // 查询分页
     *getList({ payload = {} }, { call, put, select }) {
       const { pageData } = yield select(state => state.user);
@@ -120,6 +139,13 @@ export default modelEnhance({
       branchData.list = payload.contents
 
       return { ...state, branchData }
-    }
+    },
+
+    getDetailSuccess(state, { payload }) {
+      return {
+        ...state,
+        loginVal: payload
+      };
+    },
   }
 })

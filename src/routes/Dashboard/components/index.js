@@ -68,7 +68,7 @@ export default class Dashboard extends BaseComponent {
           </Row>
           <Row>
             <Col>
-              <Panel title="数据面板组件" height={300}>
+              {/* <Panel title="数据面板组件" height={300}>
                 <div className="flex">
                   <div className="flex-auto-hidden flex flex-column">
                     <h4 className="flex-none">销售额分布</h4>
@@ -89,15 +89,15 @@ export default class Dashboard extends BaseComponent {
                     </ul>
                   </div>
                 </div>
-              </Panel>
+              </Panel> */}
             </Col>
           </Row>
           <Row gutter={20}>
-            <Col md={8}>
+            {/* <Col md={8}>
               <Panel title="折线图" height={260}>
                 <Line1 />
               </Panel>
-            </Col>
+            </Col> */}
             <Col md={8}>
               <Panel title="饼图" height={260}>
                 <Pie1 />

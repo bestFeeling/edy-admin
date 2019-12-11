@@ -1,5 +1,5 @@
 import { routerRedux } from 'dva/router';
-import { login } from '../service';
+import { login, rsas } from '../service';
 import $$ from 'cmn-utils';
 
 export default {
@@ -9,12 +9,22 @@ export default {
     loggedIn: false,
     message: '',
     user: {},
+    loginVal: {}
   },
 
   subscriptions: {
+
+    
     setup({ history, dispatch }) {
       return history.listen(({ pathname }) => {
+        
+        
         if (pathname.indexOf('/sign/login') !== -1) {
+
+          dispatch({
+            type: 'rsa'
+          });
+
           $$.removeStore('user');
         }
       });
@@ -22,6 +32,19 @@ export default {
   },
 
   effects: {
+
+        // 获取Rsa
+        *rsa({ payload = {} }, { call, put, select }) {
+
+          const { status, message, data, errorCode, errorMsg } = yield call(rsas, payload);
+          
+          yield put({
+            type: 'getDetailSuccess',
+            payload: data
+          });
+        },
+
+
     *login({ payload }, { call, put }) {
       try {
         const { status, message, data, errorCode, errorMsg } = yield call(login, payload);
@@ -56,5 +79,13 @@ export default {
         message: payload.message
       };
     },
+
+    getDetailSuccess(state, { payload }) {
+      return {
+        ...state,
+        loginVal: payload
+      };
+    },
+
   }
 };
