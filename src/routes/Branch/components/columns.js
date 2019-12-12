@@ -61,8 +61,8 @@ export default (self) => [
     formItem: {
       type: !self.state.record ? 'cascade' : 'hidden',
       options: self.props.branch.areaSelectOption,
-      changeOnSelect: true,
-      loadData: self.loadSelectData,
+      // changeOnSelect: true,
+      // loadData: self.loadSelectData,
     }
   },
 

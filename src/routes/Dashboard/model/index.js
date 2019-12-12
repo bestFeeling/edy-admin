@@ -17,7 +17,9 @@ export default modelEnhance({
             afterResponse: resp => resp.data,
             payload: {
               valueField: 'bar1',
-              url: '/charts/bar1',
+              
+              method: 'GET',
+              url: '/statistics/level',
             }
           });
           dispatch({
@@ -25,11 +27,29 @@ export default modelEnhance({
             afterResponse: resp => resp.data,
             payload: {
               valueField: 'bar2',
-              url: '/charts/bar2',
+              actionType: 'GETDATA',
+              method: 'GET',
+              url: '/statistics/task',
             }
           });
         }
       });
     }
   },
+
+  reducers: {
+    GETDATA_SUCCESS(state, { payload }) {
+      console.log(state);
+      const data = [];
+      Object.keys(payload).map((item,index)=>{
+        data.push({
+          item: item,
+          count: payload[item],
+        })
+      })
+      return { ...state, bar2: data }
+    }
+  }
+
+
 });

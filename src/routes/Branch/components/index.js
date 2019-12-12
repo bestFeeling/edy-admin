@@ -10,9 +10,13 @@ import DataTable from 'components/DataTable';
 import { ModalForm } from 'components/Modal';
 import createColumns from './columns';
 import { normal, antdNotice } from 'components/Notification';
+import config from '@/config';
+const  { baseUrl } = config;
 import './index.less';
 const { Content, Header, Footer } = Layout;
 const Pagination = DataTable.Pagination;
+
+
 
 @connect(({ branch, loading }) => ({
   branch,
@@ -72,7 +76,17 @@ export default class extends BaseComponent {
 
   onUpdate = record => {
     this.setState({
-      record,
+      record: {
+        ...record,
+        icons: [
+          {
+            uid: '-1',
+            name: 'image.png',
+            status: 'done',
+            url: baseUrl + record["icons"],
+          }
+        ]
+      },
       visible: true
     });
   };

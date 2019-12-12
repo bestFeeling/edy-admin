@@ -19,7 +19,6 @@ const Pagination = DataTable.Pagination;
   level,
   loading: loading.models.level
 }))
-
 export default class extends BaseComponent {
   state = {
     record: null,
@@ -40,9 +39,20 @@ export default class extends BaseComponent {
       payload: {
         ...this.formRef.props.form.getFieldsValue()
       }
-    });
+    })
   }
 
+
+  sc() {
+    console.log("xxx");
+  }
+
+  onUpdate = record => {
+    this.setState({
+      record,
+      visible: true
+    });
+  };
 
   render() {
     const { level, loading, dispatch } = this.props;
@@ -103,8 +113,6 @@ export default class extends BaseComponent {
       // 可以使用主键或是否有record来区分状态
       onSubmit: values => {
         const self = this
-        
-
         dispatch({
           type: 'level/save',
           payload: {
@@ -114,7 +122,13 @@ export default class extends BaseComponent {
                 record: null,
                 visible: false
               });
-              self.refresh()
+              // self.refresh()
+              dispatch({
+                type: 'level/getList',
+                payload: {
+                  
+                }
+              })
             }
           }
         });
@@ -125,7 +139,7 @@ export default class extends BaseComponent {
     return (
       <Layout className="full-layout crud-page">
         <Header>
-          <Toolbar
+          {/* <Toolbar
             appendLeft={
               <Button.Group>
                 <Button type="primary" icon="plus" onClick={this.onAdd}>
@@ -135,8 +149,8 @@ export default class extends BaseComponent {
             }
             pullDown={<SearchBar type="grid" {...searchBarProps} />}
           >
-            {/* <SearchBar wrappedComponentRef={(inst) => this.formRef = inst} group="abc" {...searchBarProps} /> */}
-          </Toolbar>
+            <SearchBar wrappedComponentRef={(inst) => this.formRef = inst} group="abc" {...searchBarProps} />
+          </Toolbar> */}
         </Header>
         <Content>
           <DataTable {...dataTableProps} />

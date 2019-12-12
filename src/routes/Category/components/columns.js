@@ -39,8 +39,7 @@ export default (self) => [
     title: '排序',
     name: 'order',
     formItem: {},
-    formItem: {
-    }
+    
   },
 
   {

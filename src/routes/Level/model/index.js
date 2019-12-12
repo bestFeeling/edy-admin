@@ -18,21 +18,14 @@ export default modelEnhance({
         if (pathname === '/level' && !LOADED) {
           LOADED = true;
           dispatch({
-            type: 'init'
-          });
+            type: 'getList'
+          })
         }
       });
     }
   },
 
   effects: {
-
-    // 进入页面加载
-    *init({ payload }, { call, put, select }) {
-      yield put({
-        type: 'getList'
-      });
-    },
 
     // 保存 之后查询分页
     *save({ payload }, { call, put, select, take }) {

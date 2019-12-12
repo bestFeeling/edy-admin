@@ -25,44 +25,54 @@ export default class Dashboard extends BaseComponent {
   render() {
     const { dashboard } = this.props;
     const { bar1, bar2 } = dashboard;
+    console.log(bar1)
     return (
       <Layout className="full-layout page dashboard-page">
         <Content>
-          <Row gutter={20}>
-            <Col md={6}>
+          <Row gutter={24}>
+            <Col md={4}>
               <Panel className="qq" header={false} cover>
-                <Icon type="qq" antd />
+                <Icon type="smile" antd />
                 <h2>
-                  <b>523</b>
+                  <b>{523}</b>
                 </h2>
-                <h5 className="text-muted">QQ</h5>
+                <h5 className="text-muted">一星级</h5>
               </Panel>
             </Col>
-            <Col md={6}>
+            <Col md={4}>
               <Panel className="wechat" header={false} cover>
-                <Icon type="wechat" antd />
+                <Icon type="smile" antd />
                 <h2>
                   <b>99+</b>
                 </h2>
-                <h5 className="text-muted">微信</h5>
+                <h5 className="text-muted">二星级</h5>
               </Panel>
             </Col>
-            <Col md={6}>
+            <Col md={4}>
               <Panel className="skype" header={false} cover>
-                <Icon type="skype" antd />
+                <Icon type="smile" antd />
                 <h2>
                   <b>2</b>
                 </h2>
-                <h5 className="text-muted">skype</h5>
+                <h5 className="text-muted">三星级	</h5>
               </Panel>
             </Col>
-            <Col md={6}>
+            <Col md={4}>
               <Panel className="github" header={false} cover>
-                <Icon type="github" antd />
+                <Icon type="smile" antd />
                 <h2>
                   <b>999</b>
                 </h2>
-                <h5 className="text-muted">github</h5>
+                <h5 className="text-muted">四星级</h5>
+              </Panel>
+            </Col>
+            <Col md={4}>
+              <Panel className="qq" header={false} cover>
+                <Icon type="smile" antd />
+                <h2>
+                  <b>999</b>
+                </h2>
+                <h5 className="text-muted">五星级</h5>
               </Panel>
             </Col>
           </Row>
@@ -100,14 +110,14 @@ export default class Dashboard extends BaseComponent {
             </Col> */}
             <Col md={8}>
               <Panel title="饼图" height={260}>
-                <Pie1 />
+                <Pie1 data={bar2}/>
               </Panel>
             </Col>
-            <Col md={8}>
+            {/* <Col md={8}>
               <Panel title="柱状图" height={260}>
                 <Bar1 data={bar1} />
               </Panel>
-            </Col>
+            </Col> */}
           </Row>
         </Content>
       </Layout>
@@ -161,13 +171,8 @@ const Bar2 = props => {
 };
 
 const Pie1 = props => {
-  const data = [
-    { item: '事例一', count: 40 },
-    { item: '事例二', count: 21 },
-    { item: '事例三', count: 17 },
-    { item: '事例四', count: 13 },
-    { item: '事例五', count: 9 }
-  ];
+  // console.log(props)
+  const data = props["data"]
 
   const dv = new DataSet.DataView();
   dv.source(data).transform({
