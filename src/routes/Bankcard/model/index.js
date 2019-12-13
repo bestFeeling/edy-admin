@@ -104,6 +104,9 @@ export default modelEnhance({
         type: 'setDetail',
         payload: {
           parent: payload,
+          header:{
+            xx: "",
+          },
           data: response.data || []
         }
       })
