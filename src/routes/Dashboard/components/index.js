@@ -24,8 +24,8 @@ for (let i = 0; i < 7; i += 1) {
 export default class Dashboard extends BaseComponent {
   render() {
     const { dashboard } = this.props;
-    const { bar1, bar2 } = dashboard;
-    console.log(bar1)
+    const { bar1, bar2,level1,level2,level3,level4,level5 } = dashboard;
+    console.log(level1,level2,level3,level4,level5)
     return (
       <Layout className="full-layout page dashboard-page">
         <Content>
@@ -34,7 +34,7 @@ export default class Dashboard extends BaseComponent {
               <Panel className="qq" header={false} cover>
                 <Icon type="smile" antd />
                 <h2>
-                  <b>{523}</b>
+                  <b>{level1}</b>
                 </h2>
                 <h5 className="text-muted">一星级</h5>
               </Panel>
@@ -43,7 +43,7 @@ export default class Dashboard extends BaseComponent {
               <Panel className="wechat" header={false} cover>
                 <Icon type="smile" antd />
                 <h2>
-                  <b>99+</b>
+                  <b>{level2}</b>
                 </h2>
                 <h5 className="text-muted">二星级</h5>
               </Panel>
@@ -52,7 +52,7 @@ export default class Dashboard extends BaseComponent {
               <Panel className="skype" header={false} cover>
                 <Icon type="smile" antd />
                 <h2>
-                  <b>2</b>
+                  <b>{level3}</b>
                 </h2>
                 <h5 className="text-muted">三星级	</h5>
               </Panel>
@@ -61,7 +61,7 @@ export default class Dashboard extends BaseComponent {
               <Panel className="github" header={false} cover>
                 <Icon type="smile" antd />
                 <h2>
-                  <b>999</b>
+                  <b>{level4}</b>
                 </h2>
                 <h5 className="text-muted">四星级</h5>
               </Panel>
@@ -70,7 +70,7 @@ export default class Dashboard extends BaseComponent {
               <Panel className="qq" header={false} cover>
                 <Icon type="smile" antd />
                 <h2>
-                  <b>999</b>
+                  <b>{level5}</b>
                 </h2>
                 <h5 className="text-muted">五星级</h5>
               </Panel>
@@ -108,8 +108,8 @@ export default class Dashboard extends BaseComponent {
                 <Line1 />
               </Panel>
             </Col> */}
-            <Col md={8}>
-              <Panel title="饼图" height={260}>
+            <Col md={20}>
+              <Panel title="任务统计" height={260}>
                 <Pie1 data={bar2}/>
               </Panel>
             </Col>

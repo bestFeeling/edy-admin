@@ -54,6 +54,17 @@ export default class extends BaseComponent {
     });
   }
 
+  onDelete = val =>{
+    const self = this
+    this.props.dispatch({
+      type: 'admin/remove',
+      payload: {
+        ...val,
+        success: this.refresh.bind(self)
+      }
+    });
+  }
+
   render() {
     const { admin, loading, dispatch } = this.props;
     const columns = createColumns(this);

@@ -61,6 +61,19 @@ export default modelEnhance({
       })
     },
 
+    //激活 
+    *remove({ payload = {} }, { call, put }) {
+      const { id, val, success } = payload
+      yield put({
+        type: '@request',
+        payload: {
+          method: 'delete',
+          success,
+          url: `/admin/${id}`
+        }
+      })
+    },
+
 
 
     // 获取列表

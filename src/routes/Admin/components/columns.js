@@ -125,9 +125,9 @@ export default (self) => [
               )
           }
 
-          {/* <Button tooltip="删除" onClick={e => self.onDelete(record)}>
+          <Button tooltip="删除" onClick={e => self.onDelete(record)}>
             <Icon type="trash" />
-          </Button> */}
+          </Button>
 
           {/* <Button tooltip="跳转到新路由">
             <Link to={"/crud/detail?id=" + record.id}>
