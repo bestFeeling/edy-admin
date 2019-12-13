@@ -6,7 +6,7 @@ import { Link } from 'dva/router';
 import LazyLoad from 'components/LazyLoad';
 import { Tag, Card } from 'antd';
 import config from '@/config';
-const  { baseUrl } = config;
+const { baseUrl } = config;
 
 export default (self) => [
   {
@@ -58,12 +58,16 @@ export default (self) => [
   {
     title: '区域',
     name: 'directoryId',
-    formItem: {
-      type: !self.state.record ? 'cascade' : 'hidden',
-      options: self.props.branch.areaSelectOption,
-      // changeOnSelect: true,
-      // loadData: self.loadSelectData,
-    }
+    formItem: ((self) => {
+      return self.state.record ? {
+        type: 'hidden'
+      } : {
+          type: 'cascade',
+          options: self.props.branch.areaSelectOption,
+          changeOnSelect: true,
+          loadData: self.loadSelectData,
+        }
+    })(self)
   },
 
   {
