@@ -11,6 +11,14 @@ export default modelEnhance({
     level3: 0,
     level4: 0,
     level5: 0,
+    line1Data: {
+      chargeItems: [],
+      payItems: []
+    },
+    line2Data: {
+      chargeItems: [],
+      payItems: []
+    }
   },
 
   subscriptions: {
@@ -35,6 +43,28 @@ export default modelEnhance({
               actionType: 'GETDATA',
               method: 'GET',
               url: '/statistics/task',
+            }
+          });
+
+          dispatch({
+            type: '@request',
+            afterResponse: resp => resp.data,
+            payload: {
+              valueField: 'line1Data',
+              actionType: 'LINE1',
+              method: 'GET',
+              url: '/statistics/push',
+            }
+          });
+
+          dispatch({
+            type: '@request',
+            afterResponse: resp => resp.data,
+            payload: {
+              valueField: 'line2Data',
+              actionType: 'LINE2',
+              method: 'GET',
+              url: '/statistics/commit',
             }
           });
         }
@@ -68,7 +98,7 @@ export default modelEnhance({
     },
 
     DATABAR_SUCCESS(state, { payload }){
-        console.log(payload["0"].count)
+        // console.log(payload["0"].count)
         let level1 = 0,level2 = 0,level3 = 0,level4 = 0,level5 = 0;
         payload.map((item,index)=>{
           if(item["level"]===1){
@@ -88,6 +118,18 @@ export default modelEnhance({
           }
         })
         return { ...state,level1,level2,level3,level4,level5 }
+    },
+
+    LINE1_SUCCESS(state, {payload}){
+      // console.log(payload)
+
+      return { ...state, line1Data: payload }
+    },
+
+    LINE2_SUCCESS(state, {payload}){
+      // console.log(payload)
+
+      return { ...state, line2Data: payload }
     }
   }
 

@@ -61,7 +61,7 @@ export default {
      */
     afterResponse: response => {
       const { status, message, errorCode, errorMsg } = response;
-      console.log(response)
+      // console.log(response)
 
       // 1008 重新登录
       if (errorCode && errorCode === 1008) {

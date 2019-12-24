@@ -24,8 +24,8 @@ for (let i = 0; i < 7; i += 1) {
 export default class Dashboard extends BaseComponent {
   render() {
     const { dashboard } = this.props;
-    const { bar1, bar2,level1,level2,level3,level4,level5 } = dashboard;
-    console.log(level1,level2,level3,level4,level5)
+    const { bar1, bar2,level1,level2,level3,level4,level5, line1Data, line2Data } = dashboard;
+    // console.log(line1Data)
     return (
       <Layout className="full-layout page dashboard-page">
         <Content>
@@ -103,21 +103,26 @@ export default class Dashboard extends BaseComponent {
             </Col>
           </Row>
           <Row gutter={20}>
-            {/* <Col md={8}>
-              <Panel title="折线图" height={260}>
-                <Line1 />
-              </Panel>
-            </Col> */}
             <Col md={20}>
+              <Panel title="统计发布任务的曲线" height={260}>
+                <Line1 data={line1Data}/>
+              </Panel>
+            </Col>
+            {/* <Col md={20}>
               <Panel title="任务统计" height={260}>
                 <Pie1 data={bar2}/>
               </Panel>
-            </Col>
-            {/* <Col md={8}>
-              <Panel title="柱状图" height={260}>
-                <Bar1 data={bar1} />
-              </Panel>
             </Col> */}
+            <Col md={20}>
+              <Panel title="统计完成任务的曲线" height={260}>
+                <Line2 data={line2Data}/>
+              </Panel>
+            </Col>
+            <Col md={20}>
+              <Panel title="任务统计" height={260}>
+                <Bar1 data={bar2} />
+              </Panel>
+            </Col>
           </Row>
         </Content>
       </Layout>
@@ -127,16 +132,21 @@ export default class Dashboard extends BaseComponent {
 
 // source https://alibaba.github.io/BizCharts/demo-detail.html?code=demo/bar/basic-column
 const Bar1 = props => {
+
+  const tDatas = props["data"];
+  console.log(tDatas)
+
+
   return (
-    <Chart data={props.data} scale={{ sales: { tickInterval: 20 } }}>
-      <Axis name="year" />
-      <Axis name="sales" />
+    <Chart data={tDatas} scale={{ sales: { tickInterval: 20 } }}>
+      <Axis name="item" />
+      <Axis name="count" />
       <Tooltip crosshairs={{ type: 'y' }} />
       <Geom
         type="interval"
-        position="year*sales"
+        position="item*count"
         color={[
-          'year',
+          'item',
           ['#3da0ff', '#51ca73', '#fad337', '#424e87', '#985ce6']
         ]}
       />
@@ -231,6 +241,20 @@ const Pie1 = props => {
 
 // https://alibaba.github.io/BizCharts/demo-detail.html?code=demo/line/series
 const Line1 = props => {
+  const tdata = props["data"];
+
+  const pData = [];
+  tdata["chargeItems"].map((item,index) => {
+    pData.push({
+      dates: item["taskTime"],
+      chargeItems: item["taskNum"],
+      payItems: tdata["payItems"][index]["taskNum"]
+    })
+  })
+
+  console.log(pData)
+
+  
   const data = [
     { month: 'Jan', Tokyo: 7.0, London: 3.9 },
     { month: 'Feb', Tokyo: 6.9, London: 4.2 },
@@ -243,32 +267,101 @@ const Line1 = props => {
     { month: 'Sep', Tokyo: 23.3, London: 14.2 },
     { month: 'Oct', Tokyo: 18.3, London: 10.3 },
     { month: 'Nov', Tokyo: 13.9, London: 6.6 },
-    { month: 'Dec', Tokyo: 9.6, London: 4.8 }
+    { month: 'Dec1', Tokyo: 9.6, London: 4.8 }
   ];
+
   const ds = new DataSet();
-  const dv = ds.createView().source(data);
+  const dv = ds.createView().source(pData);
   dv.transform({
     type: 'fold',
-    fields: ['Tokyo', 'London'], // 展开字段集
+    fields: ['chargeItems', 'payItems'], // 展开字段集
     key: 'city', // key字段
     value: 'temperature' // value字段
   });
 
   const cols = {
-    month: {
+    dates: {
       range: [0, 1]
     }
   };
   return (
     <Chart data={dv} scale={cols}>
-      <Legend />
-      <Axis name="month" />
-      <Axis name="temperature" label={{ formatter: val => `${val}°C` }} />
+      <Legend itemFormatter={val => {
+        return val === "chargeItems" ? "收费项目":"付费项目"; // val 为每个图例项的文本值
+      }} />
+      <Axis name="dates" />
+      <Axis name="temperature" label={{ formatter: val => `${val}` }} />
       <Tooltip crosshairs={{ type: 'y' }} />
-      <Geom type="line" position="month*temperature" size={2} color={'city'} />
+      <Geom type="line" position="dates*temperature" size={2} color={'city'} />
       <Geom
         type="point"
-        position="month*temperature"
+        position="dates*temperature"
+        size={4}
+        shape={'circle'}
+        color={'city'}
+        style={{ stroke: '#fff', lineWidth: 1 }}
+      />
+    </Chart>
+  );
+};
+
+
+const Line2= props => {
+  const tdata = props["data"];
+
+  const pData = [];
+  tdata["chargeItems"].map((item,index) => {
+    pData.push({
+      dates: item["taskTime"],
+      chargeItems: item["taskNum"],
+      payItems: tdata["payItems"][index]["taskNum"]
+    })
+  })
+
+  console.log(pData)
+
+  
+  const data = [
+    { month: 'Jan', Tokyo: 7.0, London: 3.9 },
+    { month: 'Feb', Tokyo: 6.9, London: 4.2 },
+    { month: 'Mar', Tokyo: 9.5, London: 5.7 },
+    { month: 'Apr', Tokyo: 14.5, London: 8.5 },
+    { month: 'May', Tokyo: 18.4, London: 11.9 },
+    { month: 'Jun', Tokyo: 21.5, London: 15.2 },
+    { month: 'Jul', Tokyo: 25.2, London: 17.0 },
+    { month: 'Aug', Tokyo: 26.5, London: 16.6 },
+    { month: 'Sep', Tokyo: 23.3, London: 14.2 },
+    { month: 'Oct', Tokyo: 18.3, London: 10.3 },
+    { month: 'Nov', Tokyo: 13.9, London: 6.6 },
+    { month: 'Dec1', Tokyo: 9.6, London: 4.8 }
+  ];
+
+  const ds = new DataSet();
+  const dv = ds.createView().source(pData);
+  dv.transform({
+    type: 'fold',
+    fields: ['chargeItems', 'payItems'], // 展开字段集
+    key: 'city', // key字段
+    value: 'temperature' // value字段
+  });
+
+  const cols = {
+    dates: {
+      range: [0, 1]
+    }
+  };
+  return (
+    <Chart data={dv} scale={cols}>
+      <Legend itemFormatter={val => {
+        return val === "chargeItems" ? "收费项目":"付费项目"; // val 为每个图例项的文本值
+      }} />
+      <Axis name="dates" />
+      <Axis name="temperature" label={{ formatter: val => `${val}` }} />
+      <Tooltip crosshairs={{ type: 'y' }} />
+      <Geom type="line" position="dates*temperature" size={2} color={'city'} />
+      <Geom
+        type="point"
+        position="dates*temperature"
         size={4}
         shape={'circle'}
         color={'city'}
