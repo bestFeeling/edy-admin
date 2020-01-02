@@ -10,6 +10,7 @@ import { routeConfig as PushMessage } from './PushMessge'
 import { routeConfig as Task } from './Task'
 import { routeConfig as Dashboard } from './Dashboard'
 import { routeConfig as Level } from './Level'
+import { routeConfig as Omen } from './Omen'
 
 const route = []
 
@@ -24,6 +25,7 @@ route.push(Category)
 route.push(Bankcard)
 route.push(PushMessage)
 route.push(Task)
+route.push(Omen)
 route.push(Dashboard)
 
 
