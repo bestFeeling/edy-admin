@@ -41,30 +41,36 @@ export default modelEnhance({
       });
     },
 
-    // *detail({ payload }, { call, put }) {
-    //   yield put({
-    //     type: '@request',
-    //     afterResponse: resp => resp.data,
-    //     payload: {
-    //       valueField: 'notices',
-    //       method: 'GET',
-    //       url: `/notice/info`,
-    //     }
-    //   });
-    // },
+//  绑定
+    *link({ payload }, { call, put }) {
+
+      const { values, success } = payload;
+      
+      console.log(values)
+      yield put({
+        type: '@request',
+        afterResponse: resp => resp.data,
+        payload: {
+          valueField: 'omens',
+          method: 'GET',
+          url: `/notice/info`,
+        }
+      });
+    },
+
     // 保存 之后查询分页
-    // *save({ payload }, { call, put, select, take }) {
-    //   const { values, success } = payload;
-    //   yield put.resolve({
-    //     type: '@request',
-    //     payload: {
-    //       notice: true,
-    //       url: '/notice/save',
-    //       success,
-    //       data: values
-    //     }
-    //   });
-    // },
+    *save({ payload }, { call, put, select, take }) {
+      const { values, success } = payload;
+      yield put.resolve({
+        type: '@request',
+        payload: {
+          notice: true,
+          url: '/omenCategory/save',
+          success,
+          data: values
+        }
+      });
+    },
 
     // // 修改
     // *update({ payload }, { call, put }) { },

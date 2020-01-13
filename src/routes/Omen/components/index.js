@@ -77,12 +77,25 @@ export default class extends BaseComponent {
       maskVisible: true
     });
   };
+
+
   onClose = () => {
     this.setState({
       maskVisible: false
     });
   };
 
+  onLink = (val) => {
+    const self = this
+    console.log(val)
+    this.props.dispatch({
+      type: 'omen/link',
+      payload: {
+        ...val,
+        success: this.refresh.bind(self)
+      }
+    });
+  }
 
   render() {
     const { omen, loading, dispatch } = this.props;
@@ -143,13 +156,9 @@ export default class extends BaseComponent {
       onSubmit: values => {
         const self = this
         console.log(values)
-        if (values.cover && values.cover.length > 0) {
-          values.cover = values.cover[0].response.data || ''
-        }
-        if (!values.cover) {
-          normal.error('没有获取到封面图片数据！')
-          return
-        }
+        values["type"] = values["typeName"]
+        values["order"] = 1
+        delete values.typeName
 
         dispatch({
           type: 'omen/save',

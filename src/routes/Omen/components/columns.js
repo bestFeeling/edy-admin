@@ -29,7 +29,7 @@ export default (self) => [
     title: '收费标准价格',
     name: 'price',
     formItem: {
-      type: type ? "string":"hidden"
+      // type: type ? "string":"hidden"
     },
     tableItem: {
       render: (text, record) => {
@@ -123,6 +123,10 @@ export default (self) => [
           </Button> */}
           <Button tooltip="修改" onClick={e => self.onUpdate(record)}>
             <Icon type="edit" />
+          </Button>
+
+          <Button tooltip="绑定" onClick={e => self.onLink(record)}>
+            <Icon type="cluster" antd/>
           </Button>
 
           {
