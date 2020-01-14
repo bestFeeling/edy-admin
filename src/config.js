@@ -14,7 +14,7 @@ export default {
   /**
    * HTML的title模板
    */
-  htmlTitle: 'DBAdmin - {title}',
+  htmlTitle: '易渡缘后台管理系统 - {title}',
 
   baseUrl: 'http://ydy.cqhtxxkj.com',
   baseApiPrefix: '/api',

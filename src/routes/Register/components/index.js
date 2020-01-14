@@ -181,8 +181,8 @@ export default class Register extends Component {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <div className="user-img">
               <img src={logoImg} alt="logo" />
-              <b>LANIF</b>
-              <span>Admin</span>
+              <b>易渡缘</b>
+              <span>后台管理系统</span>
             </div>
             <FormItem>
               {getFieldDecorator('mail', {
