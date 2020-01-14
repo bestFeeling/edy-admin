@@ -56,7 +56,18 @@ export default modelEnhance({
     },
 
     // // 修改
-    // *update({ payload }, { call, put }) { },
+    *update({ payload }, { call, put }) {
+      const { values, success } = payload;
+      yield put.resolve({
+        type: '@request',
+        payload: {
+          notice: true,
+          url: '/omenCategory/update',
+          success,
+          data: values
+        }
+      });
+    },
 
     // 删除 之后查询分页
     *remove({ payload }, { call, put, select }) {
@@ -71,7 +82,7 @@ export default modelEnhance({
       });
     },
 
-  
+
     *setEnable({ payload = {} }, { call, put }) {
       const { id, val, success, } = payload
       yield put({

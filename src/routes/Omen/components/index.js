@@ -63,6 +63,7 @@ export default class extends BaseComponent {
   }
 
   onUpdate = record => {
+    console.log(record)
     this.setState({
       record: {
         ...record,
@@ -143,13 +144,17 @@ export default class extends BaseComponent {
       // 可以使用主键或是否有record来区分状态
       onSubmit: values => {
         const self = this
-        console.log(values)
         values["type"] = values["typeName"]
         values["order"] = 1
         delete values.typeName
 
+        let type = record.id ? 'update' : 'save'
+
+        if(type==="update"){
+          values["id"] = record.id
+        }
         dispatch({
-          type: 'omen/save',
+          type: `omen/${type}`,
           payload: {
             values,
             success: () => {
