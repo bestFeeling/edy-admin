@@ -32,7 +32,7 @@ export default (self) => [
   },
 
   {
-    title: '用户名称',
+    title: '手机号码',
     name: 'username',
     tableItem: {},
     formItem: {}
@@ -75,11 +75,11 @@ export default (self) => [
     formItem: {
       type: 'select',
       dict: [{
-        code: '1',
+        code: '2',
         codeName: '男'
       },
       {
-        code: '2',
+        code: '1',
         codeName: '女'
       }]
     },
@@ -91,19 +91,23 @@ export default (self) => [
     formItem: {},
   },
   {
-    title: 'Email',
+    title: '电子邮箱',
     name: 'email',
     formItem: {},
+    // tableItem: {},
+  },
+
+  {
+    title: '身份证号码',
+    name: 'identityCard',
     tableItem: {},
   },
 
   {
-    title: '身份证Id',
+    title: '身份证号码',
     name: 'idCardNumber',
-    tableItem: {},
     formItem: {},
   },
-
   {
     title: '真实姓名',
     name: 'realName',
@@ -154,6 +158,9 @@ export default (self) => [
     title: '分会',
     name: 'branchId',
     formItem: {
+      rules: [{
+        required: true,
+      }],
       type: 'table',
       rowKey: 'id',
       titleKey: 'name',
@@ -170,6 +177,10 @@ export default (self) => [
       width: 180,
       render: (text, record) => (
         <DataTable.Oper>
+          <Button tooltip="设置为风水任务接收人员" onClick={e => self.onLink(record)}>
+            <Icon type="alert" antd/>
+          </Button>
+          
           {
             record.enable ? (
               <Button tooltip="激活" onClick={e => self.setDataState({ id: record.id, val: !record.enable })}>

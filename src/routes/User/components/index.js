@@ -49,6 +49,18 @@ export default class extends BaseComponent {
     });
   };
 
+  onLink = records => {
+    const self = this
+    console.log(records)
+    this.props.dispatch({
+      type: 'user/link',
+      payload: {
+        id: records.id,
+        success: this.refresh.bind(self)
+      }
+    });
+  }
+
   setDataState = val => {
     const self = this
     this.props.dispatch({
@@ -138,6 +150,9 @@ export default class extends BaseComponent {
         values["password"] = enPassword;
         values["random"] = loginVal["random"]
         // 
+        dispatch({
+          type: 'user/rsa'
+        })
 
         dispatch({
           type: 'user/save',

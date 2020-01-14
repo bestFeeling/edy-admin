@@ -7,7 +7,6 @@ import { Tag, Card, Tooltip } from 'antd';
 import config from '@/config';
 const  { baseUrl } = config;
 
-let type = false
 
 export default (self) => [
   {
@@ -15,6 +14,24 @@ export default (self) => [
     name: 'id',
     tableItem: {},
     
+  },
+  {
+    title: '类型名称',
+    name: 'typeName',
+    formItem: {
+      type: 'select',
+      dict: self.props.omen.types.map(o => { return { 'code': o.id, 'codeName': o.name } }),
+      onSelect: (e)=> {
+          // 
+
+          // 
+      }
+    },
+    tableItem: {
+      render: (text, record) => {
+        return (<span>{text===null ?"暂无":text}</span>)
+      }
+    },
   },
   {
     title: '名称',
@@ -47,25 +64,7 @@ export default (self) => [
       }
     },
   },
-  {
-    title: '类型名称',
-    name: 'typeName',
-    formItem: {
-      type: 'select',
-      dict: self.props.omen.types.map(o => { return { 'code': o.id, 'codeName': o.name } }),
-      onSelect: (e)=> {
-        console.log(e)
-        if(e===0){
-          type = true
-        }
-      }
-    },
-    tableItem: {
-      render: (text, record) => {
-        return (<span>{text===null ?"暂无":text}</span>)
-      }
-    },
-  },
+
 
   {
     title: '分类的说明',
@@ -123,10 +122,6 @@ export default (self) => [
           </Button> */}
           <Button tooltip="修改" onClick={e => self.onUpdate(record)}>
             <Icon type="edit" />
-          </Button>
-
-          <Button tooltip="绑定" onClick={e => self.onLink(record)}>
-            <Icon type="cluster" antd/>
           </Button>
 
           {

@@ -93,6 +93,23 @@ export default modelEnhance({
         }
       });
     },
+
+        // 设置为风水任务接收人员
+        *link({ payload }, { call, put, select }) {
+          const { id, success } = payload
+          yield put({
+            type: '@request',
+            payload: {
+              notice: true,
+              method: 'put',
+              success,
+              url: `/user/${id}`,
+            }
+          });
+        },
+
+        
+
     // 删除
     *remove({ payload }, { call, put, select }) {
       const { ids, success } = payload
@@ -125,7 +142,7 @@ export default modelEnhance({
       let { pageData } = state
       pageData.total = payload.total
       pageData.pageSize = payload.pageSize
-      pageData.pageNum = payload.pageNumber ? payload.pageNumber - 1 : 1
+      pageData.pageNum = payload.pageNumber ? payload.pageNumber : 1
       pageData.list = payload.contents
 
       return { ...state, pageData }
@@ -135,7 +152,7 @@ export default modelEnhance({
       let { branchData } = state
       branchData.total = payload.total
       branchData.pageSize = payload.pageSize
-      branchData.pageNum = payload.pageNumber ? payload.pageNumber - 1 : 1
+      branchData.pageNum = payload.pageNumber ? payload.pageNumber: 1
       branchData.list = payload.contents
 
       return { ...state, branchData }

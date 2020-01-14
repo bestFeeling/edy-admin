@@ -41,23 +41,6 @@ export default modelEnhance({
       });
     },
 
-//  绑定
-    *link({ payload }, { call, put }) {
-
-      const { values, success } = payload;
-      
-      console.log(values)
-      yield put({
-        type: '@request',
-        afterResponse: resp => resp.data,
-        payload: {
-          valueField: 'omens',
-          method: 'GET',
-          url: `/notice/info`,
-        }
-      });
-    },
-
     // 保存 之后查询分页
     *save({ payload }, { call, put, select, take }) {
       const { values, success } = payload;

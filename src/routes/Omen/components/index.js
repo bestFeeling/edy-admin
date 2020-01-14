@@ -85,18 +85,6 @@ export default class extends BaseComponent {
     });
   };
 
-  onLink = (val) => {
-    const self = this
-    console.log(val)
-    this.props.dispatch({
-      type: 'omen/link',
-      payload: {
-        ...val,
-        success: this.refresh.bind(self)
-      }
-    });
-  }
-
   render() {
     const { omen, loading, dispatch } = this.props;
     const { omens, pageData } = omen;
