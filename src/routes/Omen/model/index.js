@@ -71,12 +71,13 @@ export default modelEnhance({
 
     // 删除 之后查询分页
     *remove({ payload }, { call, put, select }) {
-      const { ids } = payload
+      const { ids,success } = payload
       yield put({
         type: '@request',
         payload: {
           notice: true,
           method: 'delete',
+          success,
           url: `/omenCategory/${ids}`,
         }
       });
@@ -139,10 +140,13 @@ export default modelEnhance({
     },
 
     GET_TYPE_SUCCESS(state, { payload }) {
+      payload = payload  || []
       payload.unshift({
         id: 0,
         name: "请选择"
       })
+
+      
       return { ...state, ...{ types: payload } }
     }
   }

@@ -23,7 +23,8 @@ export default class extends BaseComponent {
     visible: false,
     rows: [],
     maskVisible: false,
-    dataSrc: null
+    dataSrc: null,
+    typeNameState: false
   };
 
   constructor(props) {
@@ -49,6 +50,18 @@ export default class extends BaseComponent {
         success: this.refresh.bind(self)
       }
     });
+  };
+
+  onSelectHandle = val => {
+    if (val === 0) {
+      this.setState({
+        typeNameState: true
+      })
+    } else {
+      this.setState({
+        typeNameState: false
+      })
+    }
   };
 
   setEnable = val => {
@@ -143,16 +156,17 @@ export default class extends BaseComponent {
       // 新增、修改都会进到这个方法中，
       // 可以使用主键或是否有record来区分状态
       onSubmit: values => {
+        console.log(values)
         const self = this
         values["type"] = values["typeName"]
         values["order"] = 1
         delete values.typeName
 
-        let type = record.id ? 'update' : 'save'
+        let type = values.id ? 'update' : 'save'
 
-        if(type==="update"){
-          values["id"] = record.id
-        }
+        // if(type==="update"){
+        //   values["id"] = values.id
+        // }
         dispatch({
           type: `omen/${type}`,
           payload: {
