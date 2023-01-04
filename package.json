@@ -51,7 +51,7 @@
     "mockjs": "^1.0.1-beta3",
     "prop-types": "^15.6.1",
     "react-app-rewired": "^2.1.0",
-    "react-scripts": "^2.1.5",
+    "react-scripts": "^5.0.1",
     "webpack-bundle-analyzer": "^3.3.2"
   },
   "browserslist": [
